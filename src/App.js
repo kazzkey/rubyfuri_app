@@ -5,6 +5,9 @@ const App = () => {
   const [ruby1, setRuby1] = useState('');
   const [ruby2, setRuby2] = useState('');
   const [ruby3, setRuby3] = useState('');
+  const [ruby4, setRuby4] = useState('');
+  const [ruby5, setRuby5] = useState('');
+  const [ruby6, setRuby6] = useState('');
   const [kanji, setKanji] = useState('');
 
   const kanjiSplit = kanji.split('')
@@ -38,6 +41,33 @@ const App = () => {
           </p>
         </div>
       )
+    } else if (count === 4) {
+      return (
+        <div>
+          <h3>4文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    }　else if (count === 5) {
+      return (
+        <div>
+          <h3>5文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>(</rp><rt>"}{ruby5}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    } else if (count === 6) {
+      return (
+        <div>
+          <h3>6文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>(</rp><rt>"}{ruby5}{"</rt><rp>)</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>(</rp><rt>"}{ruby6}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
     } else {
       return (
         <div></div>
@@ -67,6 +97,24 @@ const App = () => {
             value={ruby3}
             placeholder="ルビ③"
             onChange={(e) => {setRuby3(e.target.value)}}
+          ></input>
+          <input
+            className="ruby"
+            value={ruby4}
+            placeholder="ルビ④"
+            onChange={(e) => {setRuby4(e.target.value)}}
+          ></input>
+          <input
+            className="ruby"
+            value={ruby5}
+            placeholder="ルビ⑤"
+            onChange={(e) => {setRuby5(e.target.value)}}
+          ></input>
+          <input
+            className="ruby"
+            value={ruby6}
+            placeholder="ルビ⑥"
+            onChange={(e) => {setRuby6(e.target.value)}}
           ></input>
         </div>
         <div>

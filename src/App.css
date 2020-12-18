@@ -37,6 +37,24 @@ p {
   font-size: 12px;
 }
 
+button {
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: white;
+  color: #00cc88;
+  font-weight: bold;
+  border: 2px solid #00cc88;
+  border-radius: 5px;
+  height: 35px;
+  width: 70px;
+  outline: 0;
+}
+button:hover {
+  background-color: #00cc88;
+  color: white;
+}
+
+
 .ruby {
   margin: 2px;
   font-size: 15px;

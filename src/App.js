@@ -13,6 +13,16 @@ const App = () => {
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
 
+  const resetBtn = () => {
+    setKanji('')
+    setRuby1('')
+    setRuby2('')
+    setRuby3('')
+    setRuby4('')
+    setRuby5('')
+    setRuby6('')
+  }
+
   const Rubyfuri = () => {
     if (count === 1) {
       return (
@@ -143,6 +153,7 @@ const App = () => {
             placeholder="ルビ⑥"
             onChange={(e) => {setRuby6(e.target.value)}}
           ></input>
+          <button onClick={resetBtn}>RESET</button>
         </div>
         <br />
         <h1>ルビ</h1>

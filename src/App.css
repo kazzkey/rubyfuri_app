@@ -40,12 +40,13 @@ p {
 .ruby {
   margin: 2px;
   font-size: 15px;
-  height: 20px;
-  width: 50px;
+  height: 30px;
+  width: 56px;
 }
 
 .kanji {
   margin: 2px;
+  padding: 0 20px;
   font-size: 30px;
   height: 70px;
   width: 350px;

@@ -1,36 +1,53 @@
 .App {
+  color: #424846;
 }
 
 .App-header {
   padding: 50px;
-  background-color: #282c34;
-  min-height: 100vh;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* font-size: calc(10px + 2vmin); */
-  color: white;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+input {
+  color: #424846;
+  border: 1px solid #424846;
+  border-radius: 2px;
+}
+
+h1{
+  background-color: #00cc88;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 10px 30px;
+  color: white;
+}
+
 p {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .ruby {
   margin: 2px;
   font-size: 15px;
   height: 20px;
-  width: 70px;
+  width: 100px;
 }
 
 .kanji {
   margin: 2px;
   font-size: 30px;
   height: 70px;
-  width: 234px;
+  width: 320px;
+}
+
+.rubyContent {
+  min-height: 150px;
+  border: 1px solid #424846;
+  border-radius: 5px;
+  padding: 10px 30px;
 }

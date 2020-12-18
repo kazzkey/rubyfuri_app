@@ -48,7 +48,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>漢字</h1>
+        <h1>入力欄</h1>
         <div>
           <input
             className="ruby"
@@ -79,7 +79,9 @@ const App = () => {
         </div>
         <br />
         <h1>ルビ</h1>
-        <Rubyfuri />
+        <div className="rubyContent">
+          <Rubyfuri />
+        </div>
       </header>
     </div>
   );

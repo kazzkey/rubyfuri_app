@@ -19,7 +19,13 @@ input {
   border-radius: 2px;
 }
 
-h1{
+input:focus {
+  outline: 0;
+  border-color: #424846;
+  box-shadow:0px 0px 5px #00cc88;
+}
+
+h1 {
   background-color: #00cc88;
   border: 1px solid;
   border-radius: 5px;

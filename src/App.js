@@ -81,6 +81,15 @@ const App = () => {
         <h1>入力欄</h1>
         <div>
           <input
+            className="kanji"
+            value={kanji}
+            placeholder="漢字を入力"
+            autoFocus="true"
+            onChange={(e) => {setKanji(e.target.value)}}
+          ></input>
+        </div>
+        <div>
+          <input
             className="ruby"
             value={ruby1}
             placeholder="ルビ①"
@@ -115,14 +124,6 @@ const App = () => {
             value={ruby6}
             placeholder="ルビ⑥"
             onChange={(e) => {setRuby6(e.target.value)}}
-          ></input>
-        </div>
-        <div>
-          <input
-            className="kanji"
-            value={kanji}
-            placeholder="漢字を入力"
-            onChange={(e) => {setKanji(e.target.value)}}
           ></input>
         </div>
         <br />

@@ -17,16 +17,19 @@ const App = () => {
           <input
             className="ruby"
             value={ruby1}
+            placeholder="ルビ①"
             onChange={(e) => {setRuby1(e.target.value)}}
           ></input>
           <input
             className="ruby"
             value={ruby2}
+            placeholder="ルビ②"
             onChange={(e) => {setRuby2(e.target.value)}}
           ></input>
           <input
             className="ruby"
             value={ruby3}
+            placeholder="ルビ③"
             onChange={(e) => {setRuby3(e.target.value)}}
           ></input>
         </div>
@@ -34,6 +37,7 @@ const App = () => {
           <input
             className="kanji"
             value={kanji}
+            placeholder="漢字を入力"
             onChange={(e) => {setKanji(e.target.value)}}
           ></input>
         </div>

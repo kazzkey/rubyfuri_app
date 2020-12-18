@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "rubyfuri",
     "public": "build",
     "ignore": [
       "firebase.json",

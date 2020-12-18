@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "fir-zikken"
+  },
+  "targets": {
+    "fir-zikken": {
+      "hosting": {
+        "rubyfuri": [
+          "rubyfuri"
+        ]
+      }
+    }
   }
 }

@@ -8,6 +8,42 @@ const App = () => {
   const [kanji, setKanji] = useState('');
 
   const kanjiSplit = kanji.split('')
+  const count = kanjiSplit.length
+
+  const Rubyfuri = () => {
+    if (count === 1) {
+      return (
+        <div>
+          <h3>1文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    } else if (count === 2) {
+      return (
+        <div>
+          <h3>2文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    } else if (count === 3) {
+      return (
+        <div>
+          <h3>3文字</h3>
+          <p>
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
+  }
 
   return (
     <div className="App">
@@ -43,18 +79,7 @@ const App = () => {
         </div>
         <br />
         <h1>ルビ</h1>
-        <h3>1文字</h3>
-        <p>
-          {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp></ruby>"}
-        </p>
-        <h3>2文字</h3>
-        <p>
-          {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp></ruby>"}
-        </p>
-        <h3>3文字</h3>
-        <p>
-          {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp></ruby>"}
-        </p>
+        <Rubyfuri />
       </header>
     </div>
   );

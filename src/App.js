@@ -9,6 +9,8 @@ const App = () => {
   const [ruby5, setRuby5] = useState('');
   const [ruby6, setRuby6] = useState('');
   const [kanji, setKanji] = useState('');
+  const [jukuji, setJukuji] = useState('');
+  const [ruby_j, setRuby_j] = useState('');
 
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
@@ -21,10 +23,24 @@ const App = () => {
     setRuby4('')
     setRuby5('')
     setRuby6('')
+    setJukuji('')
+    setRuby_j('')
   }
 
   const Rubyfuri = () => {
-    if (count === 1) {
+    if (jukuji) {
+      return (
+        <div>
+          <h3>イメージ</h3>
+          <ruby><rb>{jukuji}</rb><rp>(</rp><rt>{ruby_j}</rt><rp>)</rp></ruby>
+          <br />
+          <h3>タグ</h3>
+          <p>
+            {"<ruby><rb>"}{jukuji}{"</rb><rp>(</rp><rt>"}{ruby_j}{"</rt><rp>)</rp></ruby>"}
+          </p>
+        </div>
+      )
+    } else if (count === 1) {
       return (
         <div>
           <h3>イメージ</h3>
@@ -107,16 +123,14 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>入力欄</h1>
-        <div>
+        <div className="form">
           <input
             className="kanji"
             value={kanji}
             placeholder="漢字を入力"
             autoFocus="true"
             onChange={(e) => {setKanji(e.target.value)}}
-          ></input>
-        </div>
-        <div>
+          ></input><br />
           <input
             className="ruby"
             value={ruby1}
@@ -153,6 +167,22 @@ const App = () => {
             placeholder="ルビ⑥"
             onChange={(e) => {setRuby6(e.target.value)}}
           ></input>
+        </div>
+        <div className="form">
+          <input
+            className="jukuji"
+            value={jukuji}
+            placeholder="熟字訓を入力"
+            onChange={(e) => {setJukuji(e.target.value)}}
+          ></input><br />
+          <input
+            className="ruby_j"
+            value={ruby_j}
+            placeholder="ルビ"
+            onChange={(e) => {setRuby_j(e.target.value)}}
+          ></input>
+        </div>
+        <div>
           <button onClick={resetBtn}>RESET</button>
         </div>
         <br />

@@ -5,8 +5,8 @@
 .App-header {
   padding: 50px;
   min-height: 70vh;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
 }
 
 .App-link {
@@ -38,7 +38,7 @@ p {
 }
 
 button {
-  margin-left: 10px;
+  margin: 2% 0 0 2%;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
@@ -46,7 +46,7 @@ button {
   border: 2px solid #00cc88;
   border-radius: 5px;
   height: 35px;
-  width: 70px;
+  width: 150px;
   outline: 0;
 }
 button:hover {
@@ -70,9 +70,30 @@ button:hover {
   width: 350px;
 }
 
+.ruby_j {
+  margin: 2px;
+  padding: 0 20px;
+  font-size: 15px;
+  height: 30px;
+  width: 200px;
+}
+
+.jukuji {
+  margin: 2px;
+  padding: 0 20px;
+  font-size: 30px;
+  height: 70px;
+  width: 200px;
+}
+
 .rubyContent {
   min-height: 250px;
   border: 1px solid #424846;
   border-radius: 5px;
   padding: 10px 30px;
+}
+
+.form {
+  display: inline-block;
+  margin: 0 2%;
 }

@@ -88,7 +88,7 @@ const App = () => {
           </p>
         </div>
       )
-    }　else if (count === 5) {
+    } else if (count === 5) {
       return (
         <div>
           <h3>イメージ</h3>

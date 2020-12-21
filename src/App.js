@@ -32,11 +32,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{jukuji}</rb><rp>(</rp><rt>{ruby_j}</rt><rp>)</rp></ruby>
+          <ruby><rb>{jukuji}</rb><rp>（</rp><rt>{ruby_j}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{jukuji}{"</rb><rp>(</rp><rt>"}{ruby_j}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{jukuji}{"</rb><rp>（</rp><rt>"}{ruby_j}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -44,11 +44,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -56,11 +56,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp><rb>{kanjiSplit[1]}</rb><rp>(</rp><rt>{ruby2}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -68,11 +68,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp><rb>{kanjiSplit[1]}</rb><rp>(</rp><rt>{ruby2}</rt><rp>)</rp><rb>{kanjiSplit[2]}</rb><rp>(</rp><rt>{ruby3}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -80,11 +80,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp><rb>{kanjiSplit[1]}</rb><rp>(</rp><rt>{ruby2}</rt><rp>)</rp><rb>{kanjiSplit[2]}</rb><rp>(</rp><rt>{ruby3}</rt><rp>)</rp><rb>{kanjiSplit[3]}</rb><rp>(</rp><rt>{ruby4}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -92,11 +92,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp><rb>{kanjiSplit[1]}</rb><rp>(</rp><rt>{ruby2}</rt><rp>)</rp><rb>{kanjiSplit[2]}</rb><rp>(</rp><rt>{ruby3}</rt><rp>)</rp><rb>{kanjiSplit[3]}</rb><rp>(</rp><rt>{ruby4}</rt><rp>)</rp><rb>{kanjiSplit[4]}</rb><rp>(</rp><rt>{ruby5}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>(</rp><rt>"}{ruby5}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )
@@ -104,11 +104,11 @@ const App = () => {
       return (
         <div>
           <h3>イメージ</h3>
-          <ruby><rb>{kanjiSplit[0]}</rb><rp>(</rp><rt>{ruby1}</rt><rp>)</rp><rb>{kanjiSplit[1]}</rb><rp>(</rp><rt>{ruby2}</rt><rp>)</rp><rb>{kanjiSplit[2]}</rb><rp>(</rp><rt>{ruby3}</rt><rp>)</rp><rb>{kanjiSplit[3]}</rb><rp>(</rp><rt>{ruby4}</rt><rp>)</rp><rb>{kanjiSplit[4]}</rb><rp>(</rp><rt>{ruby5}</rt><rp>)</rp><rb>{kanjiSplit[5]}</rb><rp>(</rp><rt>{ruby6}</rt><rp>)</rp></ruby>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
           <p>
-            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>(</rp><rt>"}{ruby1}{"</rt><rp>)</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>(</rp><rt>"}{ruby2}{"</rt><rp>)</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>(</rp><rt>"}{ruby3}{"</rt><rp>)</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>(</rp><rt>"}{ruby4}{"</rt><rp>)</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>(</rp><rt>"}{ruby5}{"</rt><rp>)</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>(</rp><rt>"}{ruby6}{"</rt><rp>)</rp></ruby>"}
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp></ruby>"}
           </p>
         </div>
       )

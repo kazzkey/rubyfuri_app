@@ -283,8 +283,8 @@ const App = () => {
           <Rubyfuri />
         </div>
         <br/>
-        <h2>最近の履歴</h2>
-        <div>
+        <h1>最近の履歴</h1>
+        <div className="historyContent">
           {logItems}
         </div>
       </header>

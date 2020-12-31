@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  padding: 50px;
+  padding: 20px 50px;
   min-height: 70vh;
   /* display: flex; */
   /* flex-direction: column; */
@@ -29,7 +29,7 @@ h1 {
   background-color: #00cc88;
   border: 1px solid;
   border-radius: 5px;
-  padding: 10px 30px;
+  padding: 0 30px;
   color: white;
 }
 
@@ -87,10 +87,17 @@ button:hover {
 }
 
 .rubyContent {
-  min-height: 250px;
+  min-height: 220px;
   border: 1px solid #424846;
   border-radius: 5px;
-  padding: 10px 30px;
+  padding: 5px 30px;
+}
+
+.historyContent {
+  min-height: 100px;
+  border: 1px solid #424846;
+  border-radius: 5px;
+  padding: 5px 30px;
 }
 
 .form {
@@ -99,7 +106,7 @@ button:hover {
 }
 
 .logList {
-  margin: 0 10px;
+  margin-right: 20px;
 }
 .logList:hover {
   color:#00cc88;

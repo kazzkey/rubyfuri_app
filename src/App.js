@@ -324,6 +324,7 @@ const App = () => {
         </div>
         <div>
           <button className="resetBtn" onClick={resetBtn}>RESET</button>
+          <span className="wordNote">※RESETボタンを押すと履歴に追加されます（すでにあるものは追加されません）</span>
         </div>
         <br />
         <h1>ルビ</h1>

@@ -38,7 +38,7 @@ p {
 }
 
 .resetBtn {
-  margin: 2% 0 0 2%;
+  margin: 2% 5% 0 2%;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
@@ -136,4 +136,8 @@ p {
   height: 32px;
   width: 150px;
   outline: 0;
+}
+
+.wordNote {
+  font-size: 12px;
 }

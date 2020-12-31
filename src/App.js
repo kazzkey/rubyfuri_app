@@ -23,7 +23,6 @@ const App = () => {
     const unsubscribe = db
       .collection('logs')
       .orderBy('createdAt', 'desc')
-      .limit(15)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({

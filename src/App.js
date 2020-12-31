@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import firebase from './firebase';
 import './App.css';
 
+const db = firebase.firestore();
+
 const App = () => {
+  const [logs, setLogs] = useState([]);
   const [ruby1, setRuby1] = useState('');
   const [ruby2, setRuby2] = useState('');
   const [ruby3, setRuby3] = useState('');
@@ -12,10 +16,60 @@ const App = () => {
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
 
+  useEffect(() => {
+    const unsubscribe = db
+      .collection('logs')
+      .orderBy('createdAt', 'desc')
+      .limit(15)
+      .onSnapshot((querysnapshot) => {
+        const _logs = querysnapshot.docs.map(doc => {
+          return ({
+            logId: doc.id,
+            ...doc.data()
+          });
+        });
+      setLogs(_logs);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const logList = logs.map(log => {
+    return (
+      <i className="logList"
+      >
+        {log.kanji || log.jukuji}
+      </i>
+    )
+  })
+
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
 
+  const HistoryLog = async () => {
+    if (kanji) {
+      await db.collection('logs').add({
+        kanji: kanji,
+        ruby1: ruby1,
+        ruby2: ruby2,
+        ruby3: ruby3,
+        ruby4: ruby4,
+        ruby5: ruby5,
+        ruby6: ruby6,
+        createdAt: new Date(),
+      })
+    } else if (jukuji) {
+      await db.collection('logs').add({
+        jukuji: jukuji,
+        ruby_j: ruby_j,
+        createdAt: new Date(),
+      })
+    }
+  }
+
   const resetBtn = () => {
+    HistoryLog()
     setKanji('')
     setRuby1('')
     setRuby2('')
@@ -189,6 +243,11 @@ const App = () => {
         <h1>ルビ</h1>
         <div className="rubyContent">
           <Rubyfuri />
+        </div>
+        <br/>
+        <h2>最近の履歴</h2>
+        <div>
+          {logList}
         </div>
       </header>
     </div>

@@ -327,7 +327,7 @@ const App = () => {
           <span className="wordNote">※RESETボタンを押すと履歴に追加されます（すでにあるものは追加されません）</span>
         </div>
         <br />
-        <h1>ルビ</h1>
+        <h1>ルビタグ表示欄</h1>
         <div className="rubyContent">
           <Rubyfuri />
         </div>

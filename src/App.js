@@ -60,28 +60,6 @@ const App = () => {
     }
   })
 
-  // 履歴削除ボタンのコンポーネント
-  const DeleteBtn = () => {
-    if (edit) {
-      const red = {
-        color: "white",
-        backgroundColor: "red"
-      }
-      return (
-        <button
-          className="deleteBtn"
-          style={red}
-          onClick={() => setEdit(false)}>戻る</button>
-      )
-    } else {
-      return (
-        <button
-          className="deleteBtn"
-          onClick={() => setEdit(true)}>履歴削除モード</button>
-      )
-    }
-  }
-
   // 履歴を削除する関数
   const deleteItem = async (id) => {
     const result = window.confirm("この履歴を削除してもよろしいですか？");
@@ -144,7 +122,7 @@ const App = () => {
     }
   }
 
-  // リセットボタン
+  // リセットボタンの関数
   const resetBtn = () => {
     const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
@@ -164,6 +142,28 @@ const App = () => {
   // 漢字の文字数カウント
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
+
+  // 履歴削除ボタンのコンポーネント
+  const DeleteBtn = () => {
+    if (edit) {
+      const red = {
+        color: "white",
+        backgroundColor: "red"
+      }
+      return (
+        <button
+          className="deleteBtn"
+          style={red}
+          onClick={() => setEdit(false)}>戻る</button>
+      )
+    } else {
+      return (
+        <button
+          className="deleteBtn"
+          onClick={() => setEdit(true)}>履歴削除モード</button>
+      )
+    }
+  }
 
   // ルビ振り表示コンポーネント
   const Rubyfuri = () => {

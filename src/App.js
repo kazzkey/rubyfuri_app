@@ -16,6 +16,7 @@ const App = () => {
   const [kanji, setKanji] = useState('');
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
+  const [edit, setEdit] = useState(false);
 
   // 履歴表示の状態監視
   useEffect(() => {
@@ -39,15 +40,63 @@ const App = () => {
 
   // 履歴アイテム
   const logItems = logs.map(log => {
-    return (
-      <i id={log.logId}
-        className="logList"
-        onClick={() => displayHistory(log)}
-      >
-        {log.kanji || log.jukuji}
-      </i>
-    )
+    if (edit) {
+      return (
+        <i id={log.logId}
+          className="logList_delete"
+          onClick={() => deleteItem(log.logId)}
+        >
+          {log.kanji || log.jukuji}
+        </i>
+      )
+    } else {
+      return (
+        <i id={log.logId}
+          className="logList"
+          onClick={() => displayHistory(log)}
+        >
+          {log.kanji || log.jukuji}
+        </i>
+      )
+    }
   })
+
+  // 履歴削除ボタンのコンポーネント
+  const DeleteBtn = () => {
+    if (edit) {
+      const red = {
+        color: "white",
+        backgroundColor: "red"
+      }
+      return (
+        <button
+          className="deleteBtn"
+          style={red}
+          onClick={() => setEdit(false)}>戻る</button>
+      )
+    } else {
+      return (
+        <button
+          className="deleteBtn"
+          onClick={() => setEdit(true)}>履歴削除モード</button>
+      )
+    }
+  }
+
+  // 履歴を削除する関数
+  const deleteItem = async (id) => {
+    const result = window.confirm("この履歴を削除してもよろしいですか？");
+    if (result) {
+      try {
+        const db = firebase.firestore();
+        await db.collection('logs').doc(id).delete();
+      } catch (error) {
+        console.error(error);
+      };
+    } else {
+      return;
+    };
+  };
 
   // 履歴タグを表示させる関数
   const displayHistory = (id) => {
@@ -275,7 +324,7 @@ const App = () => {
           ></input>
         </div>
         <div>
-          <button onClick={resetBtn}>RESET</button>
+          <button className="resetBtn" onClick={resetBtn}>RESET</button>
         </div>
         <br />
         <h1>ルビ</h1>
@@ -283,6 +332,7 @@ const App = () => {
           <Rubyfuri />
         </div>
         <br/>
+        <DeleteBtn/>
         <h1>最近の履歴</h1>
         <div className="historyContent">
           {logItems}

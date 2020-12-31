@@ -37,7 +37,7 @@ p {
   font-size: 12px;
 }
 
-button {
+.resetBtn {
   margin: 2% 0 0 2%;
   cursor: pointer;
   background-color: white;
@@ -49,7 +49,7 @@ button {
   width: 150px;
   outline: 0;
 }
-button:hover {
+.resetBtn:hover {
   background-color: #00cc88;
   color: white;
 }
@@ -112,4 +112,28 @@ button:hover {
   color:#00cc88;
   border-bottom: 1px solid #00cc88;
   cursor: pointer;
+}
+
+.logList_delete {
+  margin-right: 20px;
+}
+.logList_delete:hover {
+  color: red;
+  border-bottom: 1px solid red;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  display: inline;
+  float: right;
+  margin: 30px;
+  cursor: pointer;
+  background-color: white;
+  color: #00cc88;
+  font-weight: bold;
+  border: 2px solid #00cc88;
+  border-radius: 5px;
+  height: 32px;
+  width: 150px;
+  outline: 0;
 }

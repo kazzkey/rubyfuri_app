@@ -35,14 +35,40 @@ const App = () => {
     };
   }, []);
 
-  const logList = logs.map(log => {
+  const logItems = logs.map(log => {
     return (
-      <i className="logList"
+      <i id={log.logId}
+        className="logList"
+        onClick={() => displayHistory(log)}
       >
         {log.kanji || log.jukuji}
       </i>
     )
   })
+
+  const displayHistory = (id) => {
+    if (id.kanji) {
+      setKanji(id.kanji)
+      setRuby1(id.ruby1)
+      setRuby2(id.ruby2)
+      setRuby3(id.ruby3)
+      setRuby4(id.ruby4)
+      setRuby5(id.ruby5)
+      setRuby6(id.ruby6)
+      setJukuji("")
+      setRuby_j("")
+    } else if (id.jukuji) {
+      setJukuji(id.jukuji)
+      setRuby_j(id.ruby_j)
+      setKanji('')
+      setRuby1('')
+      setRuby2('')
+      setRuby3('')
+      setRuby4('')
+      setRuby5('')
+      setRuby6('')
+    }
+  }
 
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
@@ -69,7 +95,10 @@ const App = () => {
   }
 
   const resetBtn = () => {
-    HistoryLog()
+    const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
+    if (!existence) {
+      HistoryLog()
+    }
     setKanji('')
     setRuby1('')
     setRuby2('')
@@ -247,7 +276,7 @@ const App = () => {
         <br/>
         <h2>最近の履歴</h2>
         <div>
-          {logList}
+          {logItems}
         </div>
       </header>
     </div>

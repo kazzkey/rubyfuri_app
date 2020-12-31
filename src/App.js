@@ -5,6 +5,7 @@ import './App.css';
 const db = firebase.firestore();
 
 const App = () => {
+  // ステート郡
   const [logs, setLogs] = useState([]);
   const [ruby1, setRuby1] = useState('');
   const [ruby2, setRuby2] = useState('');
@@ -16,6 +17,7 @@ const App = () => {
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
 
+  // 履歴表示の状態監視
   useEffect(() => {
     const unsubscribe = db
       .collection('logs')
@@ -35,6 +37,7 @@ const App = () => {
     };
   }, []);
 
+  // 履歴アイテム
   const logItems = logs.map(log => {
     return (
       <i id={log.logId}
@@ -46,6 +49,7 @@ const App = () => {
     )
   })
 
+  // 履歴タグを表示させる関数
   const displayHistory = (id) => {
     if (id.kanji) {
       setKanji(id.kanji)
@@ -70,9 +74,7 @@ const App = () => {
     }
   }
 
-  const kanjiSplit = kanji.split('')
-  const count = kanjiSplit.length
-
+  // 入力された漢字・熟字訓を保存する関数
   const HistoryLog = async () => {
     if (kanji) {
       await db.collection('logs').add({
@@ -94,6 +96,7 @@ const App = () => {
     }
   }
 
+  // リセットボタン
   const resetBtn = () => {
     const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
@@ -110,6 +113,11 @@ const App = () => {
     setRuby_j('')
   }
 
+  // 漢字の文字数カウント
+  const kanjiSplit = kanji.split('')
+  const count = kanjiSplit.length
+
+  // ルビ振り表示コンポーネント
   const Rubyfuri = () => {
     if (jukuji) {
       return (
@@ -202,6 +210,7 @@ const App = () => {
     }
   }
 
+  // 基本的なレンダー部分
   return (
     <div className="App">
       <header className="App-header">

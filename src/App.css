@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  padding: 20px 50px;
+  padding: 15px 50px;
   min-height: 70vh;
   /* display: flex; */
   /* flex-direction: column; */
@@ -25,16 +25,12 @@ input:focus {
   box-shadow:0px 0px 5px #00cc88;
 }
 
-h1 {
+.subtitle {
   background-color: #00cc88;
   border: 1px solid;
   border-radius: 5px;
-  padding: 0 30px;
+  padding: 2px 30px;
   color: white;
-}
-
-p {
-  font-size: 12px;
 }
 
 .resetBtn {
@@ -67,7 +63,7 @@ p {
   padding: 0 20px;
   font-size: 30px;
   height: 70px;
-  width: 350px;
+  width: 356px;
 }
 
 .ruby_j {
@@ -75,7 +71,7 @@ p {
   padding: 0 20px;
   font-size: 15px;
   height: 30px;
-  width: 200px;
+  width: 230px;
 }
 
 .jukuji {
@@ -83,14 +79,14 @@ p {
   padding: 0 20px;
   font-size: 30px;
   height: 70px;
-  width: 200px;
+  width: 230px;
 }
 
 .rubyContent {
-  min-height: 220px;
+  min-height: 300px;
   border: 1px solid #424846;
   border-radius: 5px;
-  padding: 5px 30px;
+  padding: 30px 30px;
 }
 
 .historyContent {

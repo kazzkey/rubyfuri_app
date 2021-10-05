@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
+import { Button, Popup } from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -139,6 +140,27 @@ const App = () => {
     setRuby_j('')
   }
 
+  // コピーボタンとその関数
+  const copyToClipboard = async () => {
+    if (Rubyfuri) {
+      const copyData = document.getElementsByClassName("rubyText")[0].innerText
+      await navigator.clipboard.writeText(copyData)
+    }
+  }
+  const CopyBtn = () => {
+    return (
+      <Popup
+        trigger={<Button onClick={()=> copyToClipboard()}>COPY</Button>}
+        content='コピーしたなり'
+        on='click'
+        style={{"opacity":0.8}}
+        inverted
+        position="bottom left"
+        hideOnScroll
+      />
+    )
+  }
+
   // 漢字の文字数カウント
   const kanjiSplit = kanji.split('')
   const count = kanjiSplit.length
@@ -151,16 +173,32 @@ const App = () => {
         backgroundColor: "red"
       }
       return (
-        <button
-          className="deleteBtn"
-          style={red}
-          onClick={() => setEdit(false)}>戻る</button>
+        <Popup
+          trigger={<button
+            className="deleteBtn"
+            style={red}
+            onClick={() => setEdit(false)}>戻る</button>}
+          content='不要な履歴をクリックしてください。確認ダイアログをOKすると削除が完了します。'
+          open
+          style={{"opacity":0.8}}
+          inverted
+          position="top right"
+          hideOnScroll
+        />
       )
     } else {
       return (
-        <button
-          className="deleteBtn"
-          onClick={() => setEdit(true)}>履歴削除モード</button>
+        <Popup
+          trigger={<button
+            className="deleteBtn"
+            onClick={() => setEdit(true)}>履歴を削除する</button>}
+          content='履歴を削除できるモードです。'
+          on='hover'
+          style={{"opacity":0.8}}
+          inverted
+          position="top right"
+          hideOnScroll
+        />
       )
     }
   }
@@ -174,9 +212,10 @@ const App = () => {
           <ruby><rb>{jukuji}</rb><rp>（</rp><rt>{ruby_j}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{jukuji}{"</rb><rp>（</rp><rt>"}{ruby_j}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 1) {
@@ -186,9 +225,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 2) {
@@ -198,9 +238,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 3) {
@@ -210,9 +251,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 4) {
@@ -222,9 +264,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 5) {
@@ -234,9 +277,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else if (count === 6) {
@@ -246,9 +290,10 @@ const App = () => {
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp></ruby>
           <br />
           <h3>タグ</h3>
-          <p>
+          <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp></ruby>"}
           </p>
+          <CopyBtn/>
         </div>
       )
     } else {
@@ -262,7 +307,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>入力欄</h1>
+        <h1 className="subtitle">入力欄</h1>
         <div className="form">
           <input
             className="kanji"
@@ -323,20 +368,29 @@ const App = () => {
           ></input>
         </div>
         <div>
-          <button className="resetBtn" onClick={resetBtn}>RESET</button>
-          <span className="wordNote">※RESETボタンを押すと履歴に追加されます（すでにあるものは追加されません）</span>
+          <Popup
+            trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
+            content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
+            on='hover'
+            style={{"opacity":0.8}}
+            inverted
+            position="right center"
+            hideOnScroll
+            wide
+          />
         </div>
         <br />
-        <h1>ルビタグ表示欄</h1>
+        <h1 className="subtitle">ルビタグ表示欄</h1>
         <div className="rubyContent">
           <Rubyfuri />
         </div>
         <br/>
         <DeleteBtn/>
-        <h1>最近の履歴</h1>
+        <h1 className="subtitle">最近の履歴</h1>
         <div className="historyContent">
           {logItems}
         </div>
+        <p style={{"text-align":"right"}}>ver 1.2.2</p>
       </header>
     </div>
   );

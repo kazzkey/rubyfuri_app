@@ -173,16 +173,32 @@ const App = () => {
         backgroundColor: "red"
       }
       return (
-        <button
-          className="deleteBtn"
-          style={red}
-          onClick={() => setEdit(false)}>戻る</button>
+        <Popup
+          trigger={<button
+            className="deleteBtn"
+            style={red}
+            onClick={() => setEdit(false)}>戻る</button>}
+          content='不要な履歴をクリックしてください。確認ダイアログをOKすると削除が完了します。'
+          open
+          style={{"opacity":0.8}}
+          inverted
+          position="top left"
+          hideOnScroll
+        />
       )
     } else {
       return (
-        <button
-          className="deleteBtn"
-          onClick={() => setEdit(true)}>履歴削除モード</button>
+        <Popup
+          trigger={<button
+            className="deleteBtn"
+            onClick={() => setEdit(true)}>履歴を削除する</button>}
+          content='クリックすると履歴を削除できるモードになります'
+          on='hover'
+          style={{"opacity":0.8}}
+          inverted
+          position="top left"
+          hideOnScroll
+        />
       )
     }
   }
@@ -366,7 +382,7 @@ const App = () => {
         <div className="historyContent">
           {logItems}
         </div>
-        <p style={{"text-align":"right"}}>ver 1.2.0</p>
+        <p style={{"text-align":"right"}}>ver 1.2.1</p>
       </header>
     </div>
   );

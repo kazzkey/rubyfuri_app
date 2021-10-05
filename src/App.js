@@ -182,7 +182,7 @@ const App = () => {
           open
           style={{"opacity":0.8}}
           inverted
-          position="top left"
+          position="top right"
           hideOnScroll
         />
       )
@@ -192,11 +192,11 @@ const App = () => {
           trigger={<button
             className="deleteBtn"
             onClick={() => setEdit(true)}>履歴を削除する</button>}
-          content='クリックすると履歴を削除できるモードになります'
+          content='履歴を削除できるモードです。'
           on='hover'
           style={{"opacity":0.8}}
           inverted
-          position="top left"
+          position="top right"
           hideOnScroll
         />
       )
@@ -368,8 +368,16 @@ const App = () => {
           ></input>
         </div>
         <div>
-          <button className="resetBtn" onClick={resetBtn}>RESET</button>
-          <span className="wordNote">※RESETボタンを押すと履歴に追加されます（すでにあるものは追加されません）</span>
+          <Popup
+            trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
+            content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
+            on='hover'
+            style={{"opacity":0.8}}
+            inverted
+            position="right center"
+            hideOnScroll
+            wide
+          />
         </div>
         <br />
         <h1 className="subtitle">ルビタグ表示欄</h1>
@@ -382,7 +390,7 @@ const App = () => {
         <div className="historyContent">
           {logItems}
         </div>
-        <p style={{"text-align":"right"}}>ver 1.2.1</p>
+        <p style={{"text-align":"right"}}>ver 1.2.2</p>
       </header>
     </div>
   );

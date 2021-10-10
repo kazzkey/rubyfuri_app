@@ -23,7 +23,8 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = db
       .collection('logs')
-      .orderBy('createdAt', 'desc')
+      .orderBy('count', 'desc')
+      .limit(20)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({
@@ -112,15 +113,26 @@ const App = () => {
         ruby4: ruby4,
         ruby5: ruby5,
         ruby6: ruby6,
+        count: 1,
         createdAt: new Date(),
       })
     } else if (jukuji) {
       await db.collection('logs').add({
         jukuji: jukuji,
         ruby_j: ruby_j,
+        count: 1,
         createdAt: new Date(),
       })
     }
+  }
+
+  const addCount = async (id) => {
+    const increment = (await db.collection("logs").doc(id).get()).data().count + 1
+    console.log(increment)
+    db.collection('logs').doc(id)
+    .set({
+      count: increment
+    }, {merge: true})
   }
 
   // リセットボタンの関数
@@ -128,6 +140,34 @@ const App = () => {
     const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
       HistoryLog()
+    } else {
+      if (kanji) {
+        db.collection('logs')
+        .where("kanji", "==", kanji)
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+              console.log('結果は空です')
+          } else {
+            querySnapshot.forEach(doc => {
+            　addCount(doc.id)
+            })
+          }
+        })
+      } else if (jukuji) {
+        db.collection('logs')
+        .where("jukuji", "==", jukuji)
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+              console.log('結果は空です')
+          } else {
+            querySnapshot.forEach(doc => {
+            　addCount(doc.id)
+            })
+          }
+        })
+      }
     }
     setKanji('')
     setRuby1('')
@@ -390,7 +430,7 @@ const App = () => {
         <div className="historyContent">
           {logItems}
         </div>
-        <p style={{"text-align":"right"}}>ver 1.2.2</p>
+        <p style={{"text-align":"right"}}>ver 1.2.3</p>
       </header>
     </div>
   );

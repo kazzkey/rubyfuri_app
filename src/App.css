@@ -2,7 +2,7 @@
   color: #424846;
 }
 
-.App-header {
+.contents {
   padding: 15px 50px;
   min-height: 70vh;
   /* display: flex; */
@@ -15,7 +15,7 @@
 
 input {
   color: #424846;
-  border: 1px solid #424846;
+  border: 1px solid #A0A0A0;
   border-radius: 2px;
 }
 
@@ -25,23 +25,23 @@ input:focus {
   box-shadow:0px 0px 5px #00cc88;
 }
 
-.subtitle {
+.title {
   background-color: #00cc88;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 2px 30px;
+  padding: 20px 30px;
   color: white;
 }
 
+
 .resetBtn {
-  margin: 2% 5% 0 2%;
+  float: right;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
+  font-size: 15px;
   font-weight: bold;
   border: 2px solid #00cc88;
   border-radius: 5px;
-  height: 35px;
+  height: 32px;
   width: 150px;
   outline: 0;
 }
@@ -52,47 +52,49 @@ input:focus {
 
 
 .ruby {
-  margin: 2px;
-  font-size: 15px;
+  margin: 0.2%;
+  margin-bottom: 15px;
+  font-size: 13px;
   height: 30px;
-  width: 56px;
+  width: 15%;
+  max-width: 75px;
 }
 
 .kanji {
-  margin: 2px;
+  margin-top: 15px;
   padding: 0 20px;
-  font-size: 30px;
+  font-size: 28px;
   height: 70px;
-  width: 356px;
+  width: 92%;
+  max-width: 415px;
 }
 
 .ruby_j {
-  margin: 2px;
+  margin: 0.2%;
+  margin-bottom: 15px;
   padding: 0 20px;
-  font-size: 15px;
+  font-size: 13px;
   height: 30px;
-  width: 230px;
+  width: 90%;
+  max-width: 415px;
 }
 
 .jukuji {
-  margin: 2px;
+  margin-top: 15px;
   padding: 0 20px;
-  font-size: 30px;
+  font-size: 28px;
   height: 70px;
-  width: 230px;
+  width: 90%;
+  max-width: 415px;
 }
 
 .rubyContent {
-  min-height: 300px;
-  border: 1px solid #424846;
-  border-radius: 5px;
-  padding: 30px 30px;
+  min-height: 260px;
+  padding: 20px;
 }
 
 .historyContent {
   min-height: 100px;
-  border: 1px solid #424846;
-  border-radius: 5px;
   padding: 5px 30px;
 }
 
@@ -120,12 +122,11 @@ input:focus {
 }
 
 .deleteBtn {
-  display: inline;
   float: right;
-  margin: 30px;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
+  font-size: 15px;
   font-weight: bold;
   border: 2px solid #00cc88;
   border-radius: 5px;
@@ -133,7 +134,7 @@ input:focus {
   width: 150px;
   outline: 0;
 }
-
-.wordNote {
-  font-size: 12px;
+.deleteBtn:hover {
+  background-color: #00cc88;
+  color: white;
 }

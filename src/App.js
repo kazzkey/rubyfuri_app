@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup } from 'semantic-ui-react'
+import { Button, Popup, Divider, Header, Grid, Segment, Icon } from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -23,7 +23,8 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = db
       .collection('logs')
-      .orderBy('createdAt', 'desc')
+      .orderBy('count', 'desc')
+      .limit(200)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({
@@ -112,15 +113,26 @@ const App = () => {
         ruby4: ruby4,
         ruby5: ruby5,
         ruby6: ruby6,
+        count: 1,
         createdAt: new Date(),
       })
     } else if (jukuji) {
       await db.collection('logs').add({
         jukuji: jukuji,
         ruby_j: ruby_j,
+        count: 1,
         createdAt: new Date(),
       })
     }
+  }
+
+  const addCount = async (id) => {
+    const increment = (await db.collection("logs").doc(id).get()).data().count + 1
+    console.log(increment)
+    db.collection('logs').doc(id)
+    .set({
+      count: increment
+    }, {merge: true})
   }
 
   // リセットボタンの関数
@@ -128,6 +140,34 @@ const App = () => {
     const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
       HistoryLog()
+    } else {
+      if (kanji) {
+        db.collection('logs')
+        .where("kanji", "==", kanji)
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+              console.log('結果は空です')
+          } else {
+            querySnapshot.forEach(doc => {
+            　addCount(doc.id)
+            })
+          }
+        })
+      } else if (jukuji) {
+        db.collection('logs')
+        .where("jukuji", "==", jukuji)
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+              console.log('結果は空です')
+          } else {
+            querySnapshot.forEach(doc => {
+            　addCount(doc.id)
+            })
+          }
+        })
+      }
     }
     setKanji('')
     setRuby1('')
@@ -170,7 +210,8 @@ const App = () => {
     if (edit) {
       const red = {
         color: "white",
-        backgroundColor: "red"
+        backgroundColor: "#cc2200",
+        border: "2px solid white"
       }
       return (
         <Popup
@@ -306,92 +347,124 @@ const App = () => {
   // 基本的なレンダー部分
   return (
     <div className="App">
-      <header className="App-header">
-        <h1 className="subtitle">入力欄</h1>
-        <div className="form">
-          <input
-            className="kanji"
-            value={kanji}
-            placeholder="漢字を入力"
-            autoFocus="true"
-            onChange={(e) => {setKanji(e.target.value)}}
-          ></input><br />
-          <input
-            className="ruby"
-            value={ruby1}
-            placeholder="ルビ①"
-            onChange={(e) => {setRuby1(e.target.value)}}
-          ></input>
-          <input
-            className="ruby"
-            value={ruby2}
-            placeholder="ルビ②"
-            onChange={(e) => {setRuby2(e.target.value)}}
-          ></input>
-          <input
-            className="ruby"
-            value={ruby3}
-            placeholder="ルビ③"
-            onChange={(e) => {setRuby3(e.target.value)}}
-          ></input>
-          <input
-            className="ruby"
-            value={ruby4}
-            placeholder="ルビ④"
-            onChange={(e) => {setRuby4(e.target.value)}}
-          ></input>
-          <input
-            className="ruby"
-            value={ruby5}
-            placeholder="ルビ⑤"
-            onChange={(e) => {setRuby5(e.target.value)}}
-          ></input>
-          <input
-            className="ruby"
-            value={ruby6}
-            placeholder="ルビ⑥"
-            onChange={(e) => {setRuby6(e.target.value)}}
-          ></input>
-        </div>
-        <div className="form">
-          <input
-            className="jukuji"
-            value={jukuji}
-            placeholder="熟字訓を入力"
-            onChange={(e) => {setJukuji(e.target.value)}}
-          ></input><br />
-          <input
-            className="ruby_j"
-            value={ruby_j}
-            placeholder="ルビ"
-            onChange={(e) => {setRuby_j(e.target.value)}}
-          ></input>
-        </div>
-        <div>
-          <Popup
-            trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
-            content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
-            on='hover'
-            style={{"opacity":0.8}}
-            inverted
-            position="right center"
-            hideOnScroll
-            wide
-          />
-        </div>
-        <br />
-        <h1 className="subtitle">ルビタグ表示欄</h1>
-        <div className="rubyContent">
-          <Rubyfuri />
-        </div>
-        <br/>
-        <DeleteBtn/>
-        <h1 className="subtitle">最近の履歴</h1>
-        <div className="historyContent">
-          {logItems}
-        </div>
-        <p style={{"text-align":"right"}}>ver 1.2.2</p>
-      </header>
+      <Header as='h1'>
+        <div className="title">Ruby furifuri</div>
+      </Header>
+      <div className="contents">
+        <Segment>
+          <Header as='h2' color='grey'>
+            <div><Popup
+              trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
+              content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
+              on='hover'
+              style={{"opacity":0.8}}
+              inverted
+              position="bottom right"
+              hideOnScroll
+              wide
+            /></div>
+            <Icon name='rocket'/>
+            <Header.Content>入力欄</Header.Content>
+          </Header>
+          <Grid columns={2} stackable textAlign='center'>
+            <Grid.Column>
+              <div className="form">
+                <input
+                  className="kanji"
+                  value={kanji}
+                  placeholder="漢字を入力"
+                  autoFocus="true"
+                  onChange={(e) => {setKanji(e.target.value)}}
+                ></input><br />
+                <input
+                  className="ruby"
+                  value={ruby1}
+                  placeholder="ルビ①"
+                  onChange={(e) => {setRuby1(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby2}
+                  placeholder="ルビ②"
+                  onChange={(e) => {setRuby2(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby3}
+                  placeholder="ルビ③"
+                  onChange={(e) => {setRuby3(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby4}
+                  placeholder="ルビ④"
+                  onChange={(e) => {setRuby4(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby5}
+                  placeholder="ルビ⑤"
+                  onChange={(e) => {setRuby5(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby6}
+                  placeholder="ルビ⑥"
+                  onChange={(e) => {setRuby6(e.target.value)}}
+                ></input>
+              </div>
+            </Grid.Column>
+
+            <Grid.Column>
+              <div className="form">
+                <input
+                  className="jukuji"
+                  value={jukuji}
+                  placeholder="熟字訓を入力"
+                  onChange={(e) => {setJukuji(e.target.value)}}
+                ></input><br />
+                <input
+                  className="ruby_j"
+                  value={ruby_j}
+                  placeholder="ルビ"
+                  onChange={(e) => {setRuby_j(e.target.value)}}
+                ></input>
+              </div>              
+            </Grid.Column>
+          </Grid>
+          <Divider vertical>Or</Divider>
+        </Segment>
+        
+        <Segment>
+          <Header as='h2'color='grey'>
+            <Icon name='code'/>
+            <Header.Content>ルビタグ表示欄</Header.Content>
+          </Header>
+          <Grid>
+            <Grid.Column>
+              <div className="rubyContent">
+                <Rubyfuri />
+              </div>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+        
+        <Segment>
+          <Header as='h2'color='grey'>
+            <DeleteBtn/>
+            <Icon name='history'/>
+            <Header.Content>最近の履歴</Header.Content>
+          </Header>
+          <Grid>
+            <Grid.Column>
+              <div className="historyContent">
+                {logItems}
+              </div>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+        <p style={{"text-align":"right"}}>ver 1.2.4</p>
+      </div>
     </div>
   );
 }

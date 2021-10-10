@@ -24,7 +24,8 @@ const App = () => {
     const unsubscribe = db
       .collection('logs')
       .orderBy('count', 'desc')
-      .limit(200)
+      .orderBy('createdAt', 'desc')
+      .limit(300)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({
@@ -463,7 +464,7 @@ const App = () => {
             </Grid.Column>
           </Grid>
         </Segment>
-        <p style={{"text-align":"right"}}>ver 1.2.4</p>
+        <p style={{"text-align":"right"}}>ver 1.2.5</p>
       </div>
     </div>
   );

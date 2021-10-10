@@ -3,7 +3,7 @@
 }
 
 .contents {
-  padding: 15px 50px;
+  padding: 1% 10%;
   min-height: 70vh;
   /* display: flex; */
   /* flex-direction: column; */
@@ -53,7 +53,7 @@ input:focus {
 
 .ruby {
   margin: 0.2%;
-  margin-bottom: 15px;
+  margin: 5px 0.5% 15px 0.5%;
   font-size: 13px;
   height: 30px;
   width: 15%;
@@ -65,18 +65,18 @@ input:focus {
   padding: 0 20px;
   font-size: 28px;
   height: 70px;
-  width: 92%;
-  max-width: 415px;
+  width: 95%;
+  max-width: 430px;
 }
 
 .ruby_j {
   margin: 0.2%;
-  margin-bottom: 15px;
+  margin: 5px 0 15px 0;
   padding: 0 20px;
   font-size: 13px;
   height: 30px;
-  width: 90%;
-  max-width: 415px;
+  width: 95%;
+  max-width: 400px;
 }
 
 .jukuji {
@@ -84,8 +84,8 @@ input:focus {
   padding: 0 20px;
   font-size: 28px;
   height: 70px;
-  width: 90%;
-  max-width: 415px;
+  width: 95%;
+  max-width: 400px;
 }
 
 .rubyContent {

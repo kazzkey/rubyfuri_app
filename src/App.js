@@ -23,7 +23,6 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = db
       .collection('logs')
-      .orderBy('count', 'desc')
       .orderBy('createdAt', 'desc')
       .limit(300)
       .onSnapshot((querysnapshot) => {

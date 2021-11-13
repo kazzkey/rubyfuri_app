@@ -34,3 +34,18 @@ exports.setCount = functions.https.onRequest(async (req, res) => {
   });
   batch.commit();
 });
+
+exports.logsDelete = functions.https.onRequest(async (req, res) => {
+  res.send('古いDBを削除');
+
+  let dt = new Date();
+  dt.setMonth(dt.getMonth()-8);
+  try {
+    const query = await db.collection("logs").where("createdAt", "<", dt).get();
+    query.docs.forEach(async doc => {
+      await doc.ref.delete();
+    });
+  } catch (error) {
+    console.error(error);
+  };
+});

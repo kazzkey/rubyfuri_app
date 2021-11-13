@@ -191,7 +191,7 @@ const App = () => {
     return (
       <Popup
         trigger={<Button onClick={()=> copyToClipboard()}>COPY</Button>}
-        content='コピーしたなり'
+        content='コピーしたぜよ'
         on='click'
         style={{"opacity":0.8}}
         inverted
@@ -463,7 +463,7 @@ const App = () => {
             </Grid.Column>
           </Grid>
         </Segment>
-        <p style={{"text-align":"right"}}>ver 1.2.5</p>
+        <p style={{"text-align":"right"}}>ver 1.2.6</p>
       </div>
     </div>
   );

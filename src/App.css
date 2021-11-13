@@ -13,6 +13,13 @@
   color: #61dafb;
 }
 
+.messageModal {
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 5%;
+  white-space: pre-line;
+}
+
 input {
   color: #424846;
   border: 1px solid #A0A0A0;
@@ -33,7 +40,8 @@ input:focus {
 
 
 .resetBtn {
-  float: right;
+  display: block;
+  margin: 20px auto 0 auto;
   cursor: pointer;
   background-color: white;
   color: #00cc88;

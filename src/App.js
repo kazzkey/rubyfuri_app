@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Header, Grid, Segment, Icon } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal } from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -18,13 +18,20 @@ const App = () => {
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
   const [edit, setEdit] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  // 履歴表示の状態監視
+  // 更新のお知らせの管理と履歴表示の状態監視
   useEffect(() => {
+    window.addEventListener('mouseover', () => {
+      if (localStorage.getItem('disp_popup') !== 'n1') {
+        setOpen(true)
+        localStorage.setItem('disp_popup', 'n1')
+      };
+    });
     const unsubscribe = db
       .collection('logs')
       .orderBy('createdAt', 'desc')
-      .limit(300)
+      .limit(5)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({
@@ -38,6 +45,16 @@ const App = () => {
       unsubscribe();
     };
   }, []);
+
+  // 更新メッセージ
+  const updateMessage = 
+  `いつもご利用ありがとうございます！　いくつかの修正をしています。
+
+
+  ①　RESETボタンを入力欄の下段中央に配置しました
+  　　これでボタンが押しやすくなったはず！
+  
+  ②　その他、軽微な修正を行いました`
 
   // 履歴アイテム
   const logItems = logs.map(log => {
@@ -359,6 +376,27 @@ const App = () => {
   // 基本的なレンダー部分
   return (
     <div className="App">
+      <Modal
+      closeOnDimmerClick={false}
+      basic
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      size='small'
+      >
+        <Header icon>
+          <Icon name='info circle' />
+          更新のお知らせ
+        </Header>
+        <Modal.Content>
+          <div className="messageModal">{updateMessage}</div>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='green' inverted onClick={() => setOpen(false)}>
+            <Icon name='checkmark' /> 了解
+          </Button>
+        </Modal.Actions>
+      </Modal>
       <Header as='h1'>
         <div className="title">Ruby furifuri</div>
       </Header>

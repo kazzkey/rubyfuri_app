@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Divider, Header, Grid, Segment, Icon } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon } from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -188,15 +188,27 @@ const App = () => {
     }
   }
   const CopyBtn = () => {
+    let n = Math.random()
+    let message = "コピーしたよ！"
+    if (n > 0.95) {
+      message = "コピーしたよ、いつもおつかれさま"
+    } else if (n > 0.85) {
+      message = "コピーしたってばよ！"
+    } else if (n > 0.75) {
+      message = "コピーしたにゃ"
+    } else if (n > 0.5) {
+      message = "コピーしたなり"
+    }
     return (
       <Popup
         trigger={<Button onClick={()=> copyToClipboard()}>COPY</Button>}
-        content='コピーしたぜよ'
+        content={message}
         on='click'
         style={{"opacity":0.8}}
         inverted
         position="bottom left"
         hideOnScroll
+        wide
       />
     )
   }
@@ -353,20 +365,10 @@ const App = () => {
       <div className="contents">
         <Segment>
           <Header as='h2' color='grey'>
-            <div><Popup
-              trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
-              content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
-              on='hover'
-              style={{"opacity":0.8}}
-              inverted
-              position="bottom right"
-              hideOnScroll
-              wide
-            /></div>
             <Icon name='rocket'/>
             <Header.Content>入力欄</Header.Content>
           </Header>
-          <Grid columns={2} stackable textAlign='center'>
+          <Grid columns={2} stackable divided textAlign='center'>
             <Grid.Column>
               <div className="form">
                 <input
@@ -414,7 +416,6 @@ const App = () => {
                 ></input>
               </div>
             </Grid.Column>
-
             <Grid.Column>
               <div className="form">
                 <input
@@ -432,7 +433,16 @@ const App = () => {
               </div>              
             </Grid.Column>
           </Grid>
-          <Divider vertical>Or</Divider>
+          <div><Popup
+              trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
+              content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
+              on='hover'
+              style={{"opacity":0.8}}
+              inverted
+              position="bottom right"
+              hideOnScroll
+              wide
+            /></div>
         </Segment>
         
         <Segment>
@@ -463,7 +473,7 @@ const App = () => {
             </Grid.Column>
           </Grid>
         </Segment>
-        <p style={{"text-align":"right"}}>ver 1.2.6</p>
+        <p style={{"text-align":"right"}}>ver 1.2.7</p>
       </div>
     </div>
   );

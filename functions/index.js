@@ -37,9 +37,12 @@ exports.setCount = functions.https.onRequest(async (req, res) => {
 
 exports.logsDelete = functions.https.onRequest(async (req, res) => {
   res.send('古いDBを削除');
+  
+  const admin = require("firebase-admin");
+  const db = admin.firestore();
 
   let dt = new Date();
-  dt.setMonth(dt.getMonth()-8);
+  dt.setMonth(dt.getMonth()-1);
   try {
     const query = await db.collection("logs").where("createdAt", "<", dt).get();
     query.docs.forEach(async doc => {

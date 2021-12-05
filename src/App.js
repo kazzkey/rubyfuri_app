@@ -14,6 +14,8 @@ const App = () => {
   const [ruby4, setRuby4] = useState('');
   const [ruby5, setRuby5] = useState('');
   const [ruby6, setRuby6] = useState('');
+  const [ruby7, setRuby7] = useState('');
+  const [ruby8, setRuby8] = useState('');
   const [kanji, setKanji] = useState('');
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
@@ -23,9 +25,9 @@ const App = () => {
   // 更新のお知らせの管理と履歴表示の状態監視
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n1') {
+      if (localStorage.getItem('disp_popup') !== 'n2') {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n1')
+        localStorage.setItem('disp_popup', 'n2')
       };
     });
     const unsubscribe = db
@@ -48,13 +50,10 @@ const App = () => {
 
   // 更新メッセージ
   const updateMessage = 
-  `いつもご利用ありがとうございます！　いくつかの修正をしています。
+  `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-  ①　RESETボタンを入力欄の下段中央に配置しました
-  　　これでボタンが押しやすくなったはず！
-  
-  ②　その他、軽微な修正を行いました`
+  ①　ルビを最大8文字打てるようになりました！`
 
   // 履歴アイテム
   const logItems = logs.map(log => {
@@ -104,6 +103,8 @@ const App = () => {
       setRuby4(id.ruby4)
       setRuby5(id.ruby5)
       setRuby6(id.ruby6)
+      setRuby7(id.ruby7)
+      setRuby8(id.ruby8)
       setJukuji("")
       setRuby_j("")
     } else if (id.jukuji) {
@@ -116,6 +117,8 @@ const App = () => {
       setRuby4('')
       setRuby5('')
       setRuby6('')
+      setRuby7('')
+      setRuby8('')
     }
   }
 
@@ -130,6 +133,8 @@ const App = () => {
         ruby4: ruby4,
         ruby5: ruby5,
         ruby6: ruby6,
+        ruby7: ruby7,
+        ruby8: ruby8,
         count: 1,
         createdAt: new Date(),
       })
@@ -167,7 +172,7 @@ const App = () => {
               console.log('結果は空です')
           } else {
             querySnapshot.forEach(doc => {
-            　addCount(doc.id)
+              addCount(doc.id)
             })
           }
         })
@@ -180,7 +185,7 @@ const App = () => {
               console.log('結果は空です')
           } else {
             querySnapshot.forEach(doc => {
-            　addCount(doc.id)
+              addCount(doc.id)
             })
           }
         })
@@ -193,6 +198,8 @@ const App = () => {
     setRuby4('')
     setRuby5('')
     setRuby6('')
+    setRuby7('')
+    setRuby8('')
     setJukuji('')
     setRuby_j('')
   }
@@ -366,6 +373,31 @@ const App = () => {
           <CopyBtn/>
         </div>
       )
+    } else if (count === 7) {
+      return (
+        <div>
+          <h3>イメージ</h3>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp><rb>{kanjiSplit[6]}</rb><rp>（</rp><rt>{ruby7}</rt><rp>）</rp></ruby>
+          <br />
+          <h3>タグ</h3>
+          <p className="rubyText">
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp><rb>"}{kanjiSplit[6]}{"</rb><rp>（</rp><rt>"}{ruby7}{"</rt><rp>）</rp></ruby>"}
+          </p>
+          <CopyBtn/>
+        </div>
+      )
+    } else if (count === 8) {
+      return (
+        <div>
+          <h3>イメージ</h3>
+          <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp><rb>{kanjiSplit[6]}</rb><rp>（</rp><rt>{ruby7}</rt><rp>）</rp><rb>{kanjiSplit[7]}</rb><rp>（</rp><rt>{ruby8}</rt><rp>）</rp></ruby>
+          <h3>タグ</h3>
+          <p className="rubyText">
+            {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp><rb>"}{kanjiSplit[6]}{"</rb><rp>（</rp><rt>"}{ruby7}{"</rt><rp>）</rp><rb>"}{kanjiSplit[7]}{"</rb><rp>（</rp><rt>"}{ruby8}{"</rt><rp>）</rp></ruby>"}
+          </p>
+          <CopyBtn/>
+        </div>
+      )
     } else {
       return (
         <div></div>
@@ -452,6 +484,18 @@ const App = () => {
                   placeholder="ルビ⑥"
                   onChange={(e) => {setRuby6(e.target.value)}}
                 ></input>
+                <input
+                  className="ruby"
+                  value={ruby7}
+                  placeholder="ルビ⑦"
+                  onChange={(e) => {setRuby7(e.target.value)}}
+                ></input>
+                <input
+                  className="ruby"
+                  value={ruby8}
+                  placeholder="ルビ⑧"
+                  onChange={(e) => {setRuby8(e.target.value)}}
+                ></input>
               </div>
             </Grid.Column>
             <Grid.Column>
@@ -511,7 +555,7 @@ const App = () => {
             </Grid.Column>
           </Grid>
         </Segment>
-        <p style={{"text-align":"right"}}>ver 1.2.7</p>
+        <p style={{"text-align":"right"}}>ver 1.2.8</p>
       </div>
     </div>
   );

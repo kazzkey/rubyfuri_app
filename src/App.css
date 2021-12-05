@@ -64,8 +64,8 @@ input:focus {
   margin: 5px 0.5% 15px 0.5%;
   font-size: 13px;
   height: 30px;
-  width: 15%;
-  max-width: 75px;
+  width: 11%;
+  max-width: 70px;
 }
 
 .kanji {
@@ -74,7 +74,7 @@ input:focus {
   font-size: 28px;
   height: 70px;
   width: 95%;
-  max-width: 430px;
+  max-width: 550px;
 }
 
 .ruby_j {
@@ -97,13 +97,13 @@ input:focus {
 }
 
 .rubyContent {
-  min-height: 260px;
-  padding: 20px;
+  min-height: 250px;
+  padding: 5px 20px;
 }
 
 .historyContent {
   min-height: 100px;
-  padding: 5px 30px;
+  padding: 5px 20px;
 }
 
 .form {

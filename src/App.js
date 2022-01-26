@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Header, Grid, Segment, Icon, Modal } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu } from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -21,6 +21,7 @@ const App = () => {
   const [ruby_j, setRuby_j] = useState('');
   const [edit, setEdit] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState('rubyfuri')
 
   // 更新のお知らせの管理と履歴表示の状態監視
   useEffect(() => {
@@ -405,34 +406,31 @@ const App = () => {
     }
   }
 
-  // 基本的なレンダー部分
-  return (
-    <div className="App">
-      <Modal
-      closeOnDimmerClick={false}
-      basic
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      size='small'
-      >
-        <Header icon>
-          <Icon name='info circle' />
-          更新のお知らせ
-        </Header>
-        <Modal.Content>
-          <div className="messageModal">{updateMessage}</div>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color='green' inverted onClick={() => setOpen(false)}>
-            <Icon name='checkmark' /> 了解
-          </Button>
-        </Modal.Actions>
-      </Modal>
-      <Header as='h1'>
-        <div className="title">Ruby furifuri</div>
-      </Header>
-      <div className="contents">
+  const Head = () => {
+    return (
+      <div className="title">
+        <Menu size='huge' inverted secondary>
+          <Menu.Item header><h1>Ruby furifuri 2</h1></Menu.Item>
+          <Menu.Item></Menu.Item>
+          <Menu.Item
+            name='ルビ'
+            active={activeItem === 'rubyfuri'}
+            onClick={()=> setActiveItem('rubyfuri')}
+          />
+          <Menu.Item
+            name='正規表現'
+            active={activeItem === 'regex'}
+            onClick={()=> setActiveItem('regex')}
+          />
+        </Menu>
+      </div>
+    )
+  }
+
+  const Contents = () => {
+    if (activeItem === 'rubyfuri') {
+      return (
+        <div className="contents">
         <Segment>
           <Header as='h2' color='grey'>
             <Icon name='rocket'/>
@@ -557,6 +555,43 @@ const App = () => {
         </Segment>
         <p style={{"text-align":"right"}}>ver 1.2.8</p>
       </div>
+      )
+    } else if (activeItem === 'regex') {
+      return (
+        <div className="contents"></div>
+      )
+    }
+  }
+
+  // 基本的なレンダー部分
+  return (
+    <div className="App">
+      {/* お知らせモーダル */}
+      <Modal
+        closeOnDimmerClick={false}
+        basic
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        open={open}
+        size='small'
+        >
+        <Header icon>
+          <Icon name='info circle' />
+          更新のお知らせ
+        </Header>
+        <Modal.Content>
+          <div className="messageModal">{updateMessage}</div>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='green' inverted onClick={() => setOpen(false)}>
+            <Icon name='checkmark' /> 了解
+          </Button>
+        </Modal.Actions>
+      </Modal>
+      {/* ヘッダーとメニュー */}
+      <Head/>
+      {/* コンテンツ */}
+      <Contents/>
     </div>
   );
 }

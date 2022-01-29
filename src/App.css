@@ -3,8 +3,10 @@
 }
 
 .contents {
-  padding: 1% 10%;
+  padding: 1% 10px;
   min-height: 70vh;
+  max-width: 1200px;
+  margin: 0 auto;
   /* display: flex; */
   /* flex-direction: column; */
 }
@@ -145,4 +147,14 @@ input:focus {
 .deleteBtn:hover {
   background-color: #00cc88;
   color: white;
+}
+
+/* 正規表現部 */
+.regexInput {
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
+  font-size: 1.2rem;
+  height: 50px;
+  width: 90%;
 }

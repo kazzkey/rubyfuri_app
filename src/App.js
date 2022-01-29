@@ -520,10 +520,29 @@ const App = () => {
     )
   }
 
+  // 履歴削除ボタン（秘密）
+  const deleteHistory = async () => {
+    const admin = require("firebase-admin");
+    const db = admin.firestore();
+
+    let dt = new Date();
+    dt.setMonth(dt.getMonth()-1);
+    try {
+      const query = await db.collection("logs").where("createdAt", "<", dt).get();
+      query.docs.forEach(async doc => {
+        await doc.ref.delete();
+      });
+      alert("done!")
+    } catch (error) {
+      console.error(error);
+    };
+  }
+
   // ヘッダー
   const Head = () => {
     return (
       <div className="title">
+        {/* <button onClick={()=>deleteHistory()}>delete</button> */}
         <Menu inverted secondary>
         <Menu.Header as='h1'>Ruby furifuri 2</Menu.Header>
         </Menu>

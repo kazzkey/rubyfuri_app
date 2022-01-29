@@ -36,9 +36,9 @@ const App = () => {
   // 更新のお知らせの管理と履歴表示の状態監視
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n2') {
+      if (localStorage.getItem('disp_popup') !== 'n3') {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n2')
+        localStorage.setItem('disp_popup', 'n3')
       };
     });
     const unsubscribe = db
@@ -64,7 +64,11 @@ const App = () => {
   `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-  ①　ルビを最大8文字打てるようになりました！`
+  ①　正規表現も作成できるようになりました。
+  　　左上のメニューバーから「正規表現」を押していただくと利用できます。
+  　　（現段階では履歴を保存する機能はありません）
+  
+  ②　その他、新規機能に伴う表記の変更などを行っています。`
 
   // 履歴アイテム
   const logItems = logs.map(log => {

@@ -148,3 +148,13 @@ input:focus {
   background-color: #00cc88;
   color: white;
 }
+
+/* 正規表現部 */
+.regexInput {
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
+  font-size: 1.2rem;
+  height: 50px;
+  width: 90%;
+}

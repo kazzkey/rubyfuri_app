@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
+import firebase from './firebase'
+
+if (process.env.NODE_ENV === 'production') {
+  firebase.analytics();
+}
 
 ReactDOM.render(
   <React.StrictMode>

@@ -44,7 +44,7 @@ const App = () => {
     const unsubscribe = db
       .collection('logs')
       .orderBy('createdAt', 'desc')
-      .limit(300)
+      .limit(150)
       .onSnapshot((querysnapshot) => {
         const _logs = querysnapshot.docs.map(doc => {
           return ({
@@ -168,13 +168,14 @@ const App = () => {
     console.log(increment)
     db.collection('logs').doc(id)
     .set({
-      count: increment
+      count: increment,
+      createdAt: new Date()
     }, {merge: true})
   }
 
   // リセットボタンの関数
   const resetBtn = () => {
-    const existence = logs.some(log => log.kanji === kanji) || logs.some(log => log.jukuji === jukuji)
+    const existence = logs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
       HistoryLog()
     } else {
@@ -561,7 +562,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.0.0</Menu.Item>
+          <Menu.Item position='right'>ver 2.1.0</Menu.Item>
         </Menu>
       </div>
     )
@@ -720,14 +721,14 @@ const App = () => {
                   <input
                     className="regexInput"
                     value={word1}
-                    placeholder="（例）村"
+                    placeholder="(例) 村"
                     autoFocus="true"
                     onChange={(e) => {setWord1(e.target.value)}}
                   ></input>
                   <input
                     className="regexInput"
                     value={hiragana1}
-                    placeholder="（例）むら"
+                    placeholder="(例) むら"
                     onChange={(e) => {setHiragana1(e.target.value)}}
                   ></input>
                 </Grid.Column>
@@ -736,13 +737,13 @@ const App = () => {
                   <input
                     className="regexInput"
                     value={word2}
-                    placeholder="（例）田"
+                    placeholder="(例) 田"
                     onChange={(e) => {setWord2(e.target.value)}}
                   ></input>
                   <input
                     className="regexInput"
                     value={hiragana2}
-                    placeholder="（例）た"
+                    placeholder="(例) た"
                     onChange={(e) => {setHiragana2(e.target.value)}}
                   ></input>
                 </Grid.Column>
@@ -751,7 +752,7 @@ const App = () => {
                   <input
                     className="regexInput"
                     value={word3}
-                    placeholder="（例）さん"
+                    placeholder="(例) さん"
                     onChange={(e) => {setWord3(e.target.value)}}
                   ></input>
                   <input
@@ -812,8 +813,10 @@ const App = () => {
             </Header>
             <Grid>
               <Grid.Column>
-                <Icon name='star'/>
-                例えば「村田さん」の正規表現を作りたい場合は、①の上部に「村」、下部に「むら」のように入力していきます。<br/>　「さん」のように正規表現不要なものは、上部にだけ入力してください。
+                <div style={{"padding": "2%"}}>
+                （例）「村田さん」の正規表現を作りたい場合<br/><br/>
+                ① の上部に「村」、下部に「むら」のように入力していきます。<br/>「さん」のように正規表現不要なものは、上部にだけ入力すればOKです。
+                </div>
               </Grid.Column>
             </Grid>
           </Segment>

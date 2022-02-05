@@ -1,11 +1,29 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@300;400&display=swap');
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'M PLUS 1p', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+input::-webkit-input-placeholder {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-weight: 300;
+}
+input:-moz-placeholder {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-weight: 300;
+}
+input::-moz-placeholder {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-weight: 300;
+}
+input:-ms-input-placeholder {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-weight: 300;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

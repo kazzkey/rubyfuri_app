@@ -527,9 +527,6 @@ const App = () => {
 
   // 履歴削除ボタン（秘密）
   const deleteHistory = async () => {
-    const admin = require("firebase-admin");
-    const db = admin.firestore();
-
     let dt = new Date();
     dt.setMonth(dt.getMonth()-1);
     try {
@@ -562,7 +559,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.1.0</Menu.Item>
+          <Menu.Item position='right'>ver 2.1.1</Menu.Item>
         </Menu>
       </div>
     )

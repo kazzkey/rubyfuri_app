@@ -298,7 +298,7 @@ const App = () => {
         <Popup
           trigger={<button
             className="deleteBtn"
-            onClick={() => setEdit(true)}><Icon name='trash alternate outline'/>履歴を削除する</button>}
+            onClick={() => setEdit(true)}>履歴を削除する</button>}
           content='履歴を削除できるモードです。'
           on='hover'
           style={{"opacity":0.8}}

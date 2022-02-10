@@ -139,7 +139,7 @@ const App = () => {
 
   // 入力された漢字・熟字訓を保存する関数
   const HistoryLog = async () => {
-    if (kanji) {
+    if (kanji && count < 8) {
       await db.collection('logs').add({
         kanji: kanji,
         ruby1: ruby1,
@@ -165,7 +165,6 @@ const App = () => {
 
   const addCount = async (id) => {
     const increment = (await db.collection("logs").doc(id).get()).data().count + 1
-    console.log(increment)
     db.collection('logs').doc(id)
     .set({
       count: increment,
@@ -182,6 +181,7 @@ const App = () => {
       if (kanji) {
         db.collection('logs')
         .where("kanji", "==", kanji)
+        .where("ruby1", "==", ruby1)
         .get()
         .then(querySnapshot => {
           if (querySnapshot.empty) {
@@ -517,7 +517,7 @@ const App = () => {
           <div className="messageModal">{updateMessage}</div>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' inverted onClick={() => setOpen(false)}>
+          <Button color='green' inverted onClick={() => setOpen(false), () => window.location.reload(true)}>
             <Icon name='checkmark' /> 了解
           </Button>
         </Modal.Actions>
@@ -525,26 +525,10 @@ const App = () => {
     )
   }
 
-  // 履歴削除ボタン（秘密）
-  const deleteHistory = async () => {
-    let dt = new Date();
-    dt.setMonth(dt.getMonth()-1);
-    try {
-      const query = await db.collection("logs").where("createdAt", "<", dt).get();
-      query.docs.forEach(async doc => {
-        await doc.ref.delete();
-      });
-      alert("done!")
-    } catch (error) {
-      console.error(error);
-    };
-  }
-
   // ヘッダー
   const Head = () => {
     return (
       <div className="title">
-        {/* <button onClick={()=>deleteHistory()}>delete</button> */}
         <Menu inverted secondary>
         <Menu.Header as='h1'>Ruby furifuri 2</Menu.Header>
         </Menu>

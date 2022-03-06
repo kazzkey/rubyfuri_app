@@ -51,7 +51,7 @@ const App = () => {
         .collection('logs')
         .where("ruby1", ">=", search)
         .where("ruby1", "<", search + '\uf8ff')
-        .limit(100)
+        .limit(150)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({

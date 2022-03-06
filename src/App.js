@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, Input, List} from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -22,7 +22,9 @@ const App = () => {
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
   const [logs, setLogs] = useState([]);
+  const [watchLogs, setWatchLogs] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [search, setSearch] = useState('');
   // 正規表現関連のステート
   const [word1, setWord1] = useState('');
   const [word2, setWord2] = useState('');
@@ -33,62 +35,95 @@ const App = () => {
   const [hiragana3, setHiragana3] = useState('');
   const [hiragana4, setHiragana4] = useState('');
 
-  // 更新のお知らせの管理と履歴表示の状態監視
+  // 更新のお知らせの管理
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n3') {
+      if (localStorage.getItem('disp_popup') !== 'n4') {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n3')
+        localStorage.setItem('disp_popup', 'n4')
       };
     });
-    const unsubscribe = db
-      .collection('logs')
-      .orderBy('createdAt', 'desc')
-      .limit(150)
-      .onSnapshot((querysnapshot) => {
-        const _logs = querysnapshot.docs.map(doc => {
-          return ({
-            logId: doc.id,
-            ...doc.data()
+  },[])
+  // 履歴表示の状態監視
+  useEffect(() => {
+    if(search) {
+      const searchLogs = db
+        .collection('logs')
+        .where("ruby1", ">=", search)
+        .where("ruby1", "<", search + '\uf8ff')
+        .limit(150)
+        .onSnapshot((querysnapshot) => {
+          const _logs = querysnapshot.docs.map(doc => {
+            return ({
+              logId: doc.id,
+              ...doc.data()
+            });
           });
-        });
-      setLogs(_logs);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+        setLogs(_logs);
+      });
+      return () => {
+        searchLogs();
+      };
+    } else if (!search) {
+      const unsubscribe = db
+        .collection('logs')
+        .orderBy('createdAt', 'desc')
+        .limit(50)
+        .onSnapshot((querysnapshot) => {
+          const _logs = querysnapshot.docs.map(doc => {
+            return ({
+              logId: doc.id,
+              ...doc.data()
+            });
+          });
+        setLogs(_logs);
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [search]);
 
   // 更新メッセージ
   const updateMessage = 
   `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-  ①　正規表現も作成できるようになりました。
-  　　左上のメニューバーから「正規表現」を押していただくと利用できます。
-  　　（現段階では履歴を保存する機能はありません）
-  
-  ②　その他、新規機能に伴う表記の変更などを行っています。`
+  ①　ルビの履歴アバウト検索機能ができました！
+  　　検索したい言葉の1文字目のルビをひらがなで入力してください。
+  　　履歴に保存されているものが表示されます。
+  　　（現在、熟字訓は検索には表示されません。すみません！）
+
+  ②　その他、軽微な変更を行っています。`
 
   // 履歴アイテム
   const logItems = logs.map(log => {
     if (edit) {
       return (
-        <i id={log.logId}
-          className="logList_delete"
-          onClick={() => deleteItem(log.logId)}
+        <List.Item id={log.logId}
+        className="logList_delete"
+        onClick={() => deleteItem(log.logId)}
         >
           {log.kanji || log.jukuji}
-        </i>
+        </List.Item>
+      )
+    } else if (search) {
+      return (
+        <List.Item id={log.logId}
+          className="logList"
+          onClick={() => displayHistory(log)}
+        >
+           {log.kanji || log.jukuji}
+        </List.Item>
       )
     } else {
       return (
-        <i id={log.logId}
+        <List.Item id={log.logId}
           className="logList"
           onClick={() => displayHistory(log)}
         >
           {log.kanji || log.jukuji}
-        </i>
+        </List.Item>
       )
     }
   })
@@ -139,7 +174,7 @@ const App = () => {
 
   // 入力された漢字・熟字訓を保存する関数
   const HistoryLog = async () => {
-    if (kanji) {
+    if (kanji && count < 8) {
       await db.collection('logs').add({
         kanji: kanji,
         ruby1: ruby1,
@@ -165,7 +200,6 @@ const App = () => {
 
   const addCount = async (id) => {
     const increment = (await db.collection("logs").doc(id).get()).data().count + 1
-    console.log(increment)
     db.collection('logs').doc(id)
     .set({
       count: increment,
@@ -174,14 +208,26 @@ const App = () => {
   }
 
   // リセットボタンの関数
-  const resetBtn = () => {
-    const existence = logs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
+  const resetBtn = async () => {
+    await db
+      .collection('logs')
+      .onSnapshot((querysnapshot) => {
+        const _logs = querysnapshot.docs.map(doc => {
+          return ({
+            logId: doc.id,
+            ...doc.data()
+          });
+        });
+        setWatchLogs(_logs);
+    });
+    const existence = watchLogs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
       HistoryLog()
     } else {
       if (kanji) {
         db.collection('logs')
         .where("kanji", "==", kanji)
+        .where("ruby1", "==", ruby1)
         .get()
         .then(querySnapshot => {
           if (querySnapshot.empty) {
@@ -218,6 +264,7 @@ const App = () => {
     setRuby8('')
     setJukuji('')
     setRuby_j('')
+    setSearch('')
   }
 
   const RegresetBtn = () => {
@@ -276,7 +323,7 @@ const App = () => {
     if (edit) {
       const red = {
         color: "white",
-        backgroundColor: "#cc2200",
+        backgroundColor: "#d63333",
         border: "2px solid white"
       }
       return (
@@ -517,7 +564,7 @@ const App = () => {
           <div className="messageModal">{updateMessage}</div>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' inverted onClick={() => setOpen(false)}>
+          <Button color='green' inverted onClick={() => setOpen(false), () => window.location.reload(true)}>
             <Icon name='checkmark' /> 了解
           </Button>
         </Modal.Actions>
@@ -525,26 +572,10 @@ const App = () => {
     )
   }
 
-  // 履歴削除ボタン（秘密）
-  const deleteHistory = async () => {
-    let dt = new Date();
-    dt.setMonth(dt.getMonth()-1);
-    try {
-      const query = await db.collection("logs").where("createdAt", "<", dt).get();
-      query.docs.forEach(async doc => {
-        await doc.ref.delete();
-      });
-      alert("done!")
-    } catch (error) {
-      console.error(error);
-    };
-  }
-
   // ヘッダー
   const Head = () => {
     return (
       <div className="title">
-        {/* <button onClick={()=>deleteHistory()}>delete</button> */}
         <Menu inverted secondary>
         <Menu.Header as='h1'>Ruby furifuri 2</Menu.Header>
         </Menu>
@@ -559,7 +590,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.1.2</Menu.Item>
+          <Menu.Item position='right'>ver 2.2.0</Menu.Item>
         </Menu>
       </div>
     )
@@ -687,11 +718,30 @@ const App = () => {
               <Icon name='history'/>
               <Header.Content>最近の履歴</Header.Content>
             </Header>
+            <Popup
+              trigger={
+                <Input transparent icon>
+                  <input
+                    placeholder='検索できるよ'
+                    value={search}
+                    onChange={(e) => {setSearch(e.target.value)}}
+                  />
+                  <Icon link name='remove' onClick={() => setSearch("")} />
+                </Input>
+              }
+              content='1文字目のルビをひらがなで入力してください。（熟字訓は現在検索できません）'
+              on='focus'
+              style={{"opacity":0.8}}
+              inverted
+              position="right center"
+              hideOnScroll
+              wide
+            />
             <Grid>
-              <Grid.Column>
-                <div className="historyContent">
-                  {logItems}
-                </div>
+              <Grid.Column className="historyContent">
+              <List celled horizontal size="big">
+                {logItems}
+              </List>
               </Grid.Column>
             </Grid>
           </Segment>

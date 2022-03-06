@@ -590,7 +590,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.1.2</Menu.Item>
+          <Menu.Item position='right'>ver 2.2.0</Menu.Item>
         </Menu>
       </div>
     )

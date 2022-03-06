@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu } from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, Input, List} from 'semantic-ui-react'
 import './App.css';
 
 const db = firebase.firestore();
@@ -22,7 +22,9 @@ const App = () => {
   const [jukuji, setJukuji] = useState('');
   const [ruby_j, setRuby_j] = useState('');
   const [logs, setLogs] = useState([]);
+  const [watchLogs, setWatchLogs] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [search, setSearch] = useState('');
   // 正規表現関連のステート
   const [word1, setWord1] = useState('');
   const [word2, setWord2] = useState('');
@@ -33,7 +35,7 @@ const App = () => {
   const [hiragana3, setHiragana3] = useState('');
   const [hiragana4, setHiragana4] = useState('');
 
-  // 更新のお知らせの管理と履歴表示の状態監視
+  // 更新のお知らせの管理
   useEffect(() => {
     window.addEventListener('mouseover', () => {
       if (localStorage.getItem('disp_popup') !== 'n3') {
@@ -41,23 +43,46 @@ const App = () => {
         localStorage.setItem('disp_popup', 'n3')
       };
     });
-    const unsubscribe = db
-      .collection('logs')
-      .orderBy('createdAt', 'desc')
-      .limit(150)
-      .onSnapshot((querysnapshot) => {
-        const _logs = querysnapshot.docs.map(doc => {
-          return ({
-            logId: doc.id,
-            ...doc.data()
+  },[])
+  // 履歴表示の状態監視
+  useEffect(() => {
+    if(search) {
+      const searchLogs = db
+        .collection('logs')
+        .where("ruby1", ">=", search)
+        .where("ruby1", "<", search + '\uf8ff')
+        .limit(100)
+        .onSnapshot((querysnapshot) => {
+          const _logs = querysnapshot.docs.map(doc => {
+            return ({
+              logId: doc.id,
+              ...doc.data()
+            });
           });
-        });
-      setLogs(_logs);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+        setLogs(_logs);
+      });
+      return () => {
+        searchLogs();
+      };
+    } else if (!search) {
+      const unsubscribe = db
+        .collection('logs')
+        .orderBy('createdAt', 'desc')
+        .limit(50)
+        .onSnapshot((querysnapshot) => {
+          const _logs = querysnapshot.docs.map(doc => {
+            return ({
+              logId: doc.id,
+              ...doc.data()
+            });
+          });
+        setLogs(_logs);
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [search]);
 
   // 更新メッセージ
   const updateMessage = 
@@ -74,21 +99,30 @@ const App = () => {
   const logItems = logs.map(log => {
     if (edit) {
       return (
-        <i id={log.logId}
-          className="logList_delete"
-          onClick={() => deleteItem(log.logId)}
+        <List.Item id={log.logId}
+        className="logList_delete"
+        onClick={() => deleteItem(log.logId)}
         >
           {log.kanji || log.jukuji}
-        </i>
+        </List.Item>
+      )
+    } else if (search) {
+      return (
+        <List.Item id={log.logId}
+          className="logList"
+          onClick={() => displayHistory(log)}
+        >
+           {log.kanji || log.jukuji}
+        </List.Item>
       )
     } else {
       return (
-        <i id={log.logId}
+        <List.Item id={log.logId}
           className="logList"
           onClick={() => displayHistory(log)}
         >
           {log.kanji || log.jukuji}
-        </i>
+        </List.Item>
       )
     }
   })
@@ -173,8 +207,19 @@ const App = () => {
   }
 
   // リセットボタンの関数
-  const resetBtn = () => {
-    const existence = logs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
+  const resetBtn = async () => {
+    await db
+      .collection('logs')
+      .onSnapshot((querysnapshot) => {
+        const _logs = querysnapshot.docs.map(doc => {
+          return ({
+            logId: doc.id,
+            ...doc.data()
+          });
+        });
+        setWatchLogs(_logs);
+    });
+    const existence = watchLogs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
     if (!existence) {
       HistoryLog()
     } else {
@@ -218,6 +263,7 @@ const App = () => {
     setRuby8('')
     setJukuji('')
     setRuby_j('')
+    setSearch('')
   }
 
   const RegresetBtn = () => {
@@ -276,7 +322,7 @@ const App = () => {
     if (edit) {
       const red = {
         color: "white",
-        backgroundColor: "#cc2200",
+        backgroundColor: "#d63333",
         border: "2px solid white"
       }
       return (
@@ -671,11 +717,30 @@ const App = () => {
               <Icon name='history'/>
               <Header.Content>最近の履歴</Header.Content>
             </Header>
+            <Popup
+              trigger={
+                <Input transparent icon>
+                  <input
+                    placeholder='検索できるよ'
+                    value={search}
+                    onChange={(e) => {setSearch(e.target.value)}}
+                  />
+                  <Icon link name='remove' onClick={() => setSearch("")} />
+                </Input>
+              }
+              content='1文字目のルビをひらがなで入力してください。（熟字訓は現在検索できません）'
+              on='focus'
+              style={{"opacity":0.8}}
+              inverted
+              position="right center"
+              hideOnScroll
+              wide
+            />
             <Grid>
-              <Grid.Column>
-                <div className="historyContent">
-                  {logItems}
-                </div>
+              <Grid.Column className="historyContent">
+              <List celled horizontal size="big">
+                {logItems}
+              </List>
               </Grid.Column>
             </Grid>
           </Segment>

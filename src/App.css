@@ -24,14 +24,19 @@
 
 input {
   color: #424846;
-  border: 1px solid #A0A0A0;
+  border: 1.5px solid #a0a0a0;
   border-radius: 2px;
 }
 
 input:focus {
   outline: 0;
-  border-color: #424846;
-  box-shadow:0px 0px 5px #00cc88;
+  border-color: #00cc88;
+  box-shadow:0px 0px 3px #00cc88;
+}
+
+::placeholder {
+  color: #7a7c7b;
+  font-weight: bold;
 }
 
 .title {
@@ -104,7 +109,6 @@ input:focus {
 
 .historyContent {
   min-height: 100px;
-  padding: 5px 20px;
 }
 
 .form {
@@ -112,20 +116,19 @@ input:focus {
 }
 
 .logList {
-  margin-right: 20px;
+  color: #7a7c7b;
 }
 .logList:hover {
   color:#00cc88;
-  border-bottom: 1px solid #00cc88;
   cursor: pointer;
 }
 
 .logList_delete {
-  margin-right: 20px;
+  color: #7a7c7b;
 }
 .logList_delete:hover {
-  color: red;
-  border-bottom: 1px solid red;
+  color: #ff5555;
+  border-bottom: 1px solid #ff5555;
   cursor: pointer;
 }
 
@@ -155,4 +158,16 @@ input:focus {
   font-size: 1.1rem;
   height: 50px;
   width: 95%;
+}
+
+/* 検索窓 */
+.ui.input {
+  color: #424846;
+  border: 1.5px solid #a0a0a0;
+  border-radius: 2px;
+  margin: 2%;
+  padding: 10px;
+}
+.remove.icon {
+  padding: 20px;
 }

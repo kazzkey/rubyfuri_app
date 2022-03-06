@@ -38,9 +38,9 @@ const App = () => {
   // 更新のお知らせの管理
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n3') {
+      if (localStorage.getItem('disp_popup') !== 'n4') {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n3')
+        localStorage.setItem('disp_popup', 'n4')
       };
     });
   },[])
@@ -89,11 +89,12 @@ const App = () => {
   `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-  ①　正規表現も作成できるようになりました。
-  　　左上のメニューバーから「正規表現」を押していただくと利用できます。
-  　　（現段階では履歴を保存する機能はありません）
-  
-  ②　その他、新規機能に伴う表記の変更などを行っています。`
+  ①　ルビの履歴アバウト検索機能ができました！
+  　　検索したい言葉の1文字目のルビをひらがなで入力してください。
+  　　履歴に保存されているものが表示されます。
+  　　（現在、熟字訓は検索には表示されません。すみません！）
+
+  ②　その他、軽微な変更を行っています。`
 
   // 履歴アイテム
   const logItems = logs.map(log => {

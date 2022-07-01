@@ -186,6 +186,7 @@ const App = () => {
         ruby7: ruby7,
         ruby8: ruby8,
         count: 1,
+        yomigana: ruby1+ruby2+ruby3+ruby4+ruby5+ruby6+ruby7+ruby8,
         createdAt: new Date(),
       })
     } else if (jukuji) {
@@ -193,6 +194,7 @@ const App = () => {
         jukuji: jukuji,
         ruby_j: ruby_j,
         count: 1,
+        yomigana: ruby_j,
         createdAt: new Date(),
       })
     }
@@ -590,7 +592,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.2.0</Menu.Item>
+          <Menu.Item position='right'>ver 2.2.1</Menu.Item>
         </Menu>
       </div>
     )

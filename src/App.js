@@ -65,6 +65,17 @@ const App = () => {
         searchLogs();
       };
     } else if (!search) {
+      db
+        .collection('logs')
+        .onSnapshot((querysnapshot) => {
+          const watchlogs = querysnapshot.docs.map(doc => {
+            return ({
+              logId: doc.id,
+              ...doc.data()
+            });
+          });
+        setWatchLogs(watchlogs);
+      });
       const unsubscribe = db
         .collection('logs')
         .orderBy('createdAt', 'desc')
@@ -210,19 +221,8 @@ const App = () => {
   }
 
   // リセットボタンの関数
-  const resetBtn = async () => {
-    await db
-      .collection('logs')
-      .onSnapshot((querysnapshot) => {
-        const _logs = querysnapshot.docs.map(doc => {
-          return ({
-            logId: doc.id,
-            ...doc.data()
-          });
-        });
-        setWatchLogs(_logs);
-    });
-    const existence = watchLogs.some(log => log.kanji === kanji && log.ruby1 === ruby1) || logs.some(log => log.jukuji === jukuji)
+  const resetBtn = () => {
+    const existence = (watchLogs.some(log => log.kanji === kanji && log.ruby1 === ruby1)) || (watchLogs.some(log => log.jukuji === jukuji))
     if (!existence) {
       HistoryLog()
     } else {
@@ -267,6 +267,7 @@ const App = () => {
     setJukuji('')
     setRuby_j('')
     setSearch('')
+    setWatchLogs([])
   }
 
   const RegresetBtn = () => {
@@ -592,7 +593,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.2.1</Menu.Item>
+          <Menu.Item position='right'>ver 2.2.2</Menu.Item>
         </Menu>
       </div>
     )

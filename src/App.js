@@ -38,9 +38,9 @@ const App = () => {
   // 更新のお知らせの管理
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n4') {
+      if (localStorage.getItem('disp_popup') !== 'n5') {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n4')
+        localStorage.setItem('disp_popup', 'n5')
       };
     });
   },[])
@@ -100,10 +100,9 @@ const App = () => {
   `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-  ①　ルビの履歴アバウト検索機能ができました！
-  　　検索したい言葉の1文字目のルビをひらがなで入力してください。
-  　　履歴に保存されているものが表示されます。
-  　　（現在、熟字訓は検索には表示されません。すみません！）
+  ①　ルビの履歴検索機能がより便利になりました！
+  　　・頭文字だけでなく、全文字検索できるようになりました
+  　　・熟字訓も検索できるようになりました
 
   ②　その他、軽微な変更を行っています。`
 
@@ -593,7 +592,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.2.2</Menu.Item>
+          <Menu.Item position='right'>ver 2.3.0</Menu.Item>
         </Menu>
       </div>
     )

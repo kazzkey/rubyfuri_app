@@ -566,7 +566,7 @@ const App = () => {
           <div className="messageModal">{updateMessage}</div>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' inverted onClick={() => setOpen(false), () => window.location.reload(true)}>
+          <Button color='green' inverted onClick={() => setOpen(false)}>
             <Icon name='checkmark' /> 了解
           </Button>
         </Modal.Actions>
@@ -690,7 +690,7 @@ const App = () => {
             </Grid>
             <div><Popup
                 trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
-                content='入力欄がリセットされると同時に履歴欄に追加されます。（すでにあるものは追加されません）'
+                content='入力欄がリセットされ、履歴に追加されます。'
                 on='hover'
                 style={{"opacity":0.8}}
                 inverted

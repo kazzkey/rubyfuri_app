@@ -49,9 +49,9 @@ const App = () => {
     if(search) {
       const searchLogs = db
         .collection('logs')
-        .where("ruby1", ">=", search)
-        .where("ruby1", "<", search + '\uf8ff')
-        .limit(150)
+        .where("yomigana", ">=", search)
+        .where("yomigana", "<", search + '\uf8ff')
+        .limit(100)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({
@@ -79,7 +79,7 @@ const App = () => {
       const unsubscribe = db
         .collection('logs')
         .orderBy('createdAt', 'desc')
-        .limit(50)
+        .limit(30)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({
@@ -725,14 +725,14 @@ const App = () => {
               trigger={
                 <Input transparent icon>
                   <input
-                    placeholder='検索できるよ'
+                    placeholder='検索できちゃうよ'
                     value={search}
                     onChange={(e) => {setSearch(e.target.value)}}
                   />
                   <Icon link name='remove' onClick={() => setSearch("")} />
                 </Input>
               }
-              content='1文字目のルビをひらがなで入力してください。（熟字訓は現在検索できません）'
+              content='検索したい言葉のルビを入力してください'
               on='focus'
               style={{"opacity":0.8}}
               inverted
@@ -742,7 +742,7 @@ const App = () => {
             />
             <Grid>
               <Grid.Column className="historyContent">
-              <List celled horizontal size="big">
+              <List celled horizontal size="huge">
                 {logItems}
               </List>
               </Grid.Column>

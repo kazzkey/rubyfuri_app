@@ -51,7 +51,7 @@ const App = () => {
         .collection('logs')
         .where("yomigana", ">=", search)
         .where("yomigana", "<", search + '\uf8ff')
-        .limit(100)
+        .limit(50)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({
@@ -79,7 +79,7 @@ const App = () => {
       const unsubscribe = db
         .collection('logs')
         .orderBy('createdAt', 'desc')
-        .limit(30)
+        .limit(20)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({

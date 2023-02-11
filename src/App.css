@@ -47,8 +47,8 @@ input:focus {
 
 
 .resetBtn {
-  display: block;
-  margin: 20px auto 0 auto;
+  /* display: block; */
+  margin: 20px 20px 0 10px;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
@@ -65,24 +65,28 @@ input:focus {
   color: white;
 }
 
+.copyBtn {
+  height: 40px;
+  width: 130px;
+}
+
 
 .ruby {
   margin: 0.2%;
-  margin: 5px 0.5% 15px 0.5%;
+  margin: 1% 0.15%;
   font-size: 12px;
   letter-spacing: -1px;
   height: 30px;
-  width: 11.5%;
-  max-width: 70px;
+  width: 12.2%;
+  max-width: 75px;
 }
 
-.kanji {
+.kanji, .jukuji {
   margin-top: 15px;
   padding: 0 20px;
-  font-size: 28px;
+  font-size: 25px;
   height: 70px;
-  width: 99%;
-  max-width: 550px;
+  width: 100%;
 }
 
 .ruby_j {
@@ -94,26 +98,16 @@ input:focus {
   width: 100%;
 }
 
-.jukuji {
-  margin-top: 15px;
-  padding: 0 20px;
-  font-size: 28px;
-  height: 70px;
-  width: 100%;
+.rubyText {
+  font-size: 12px;
 }
 
 .rubyContent {
-  min-height: 250px;
-  padding: 5px 20px;
+  min-height: 450px;
 }
 
 .historyContent {
-  min-height: 100px;
-  margin: 0 2%;
-}
-
-.form {
-  margin: 0 2%;
+  min-height: 250px;
 }
 
 .logList {
@@ -162,15 +156,10 @@ input:focus {
 }
 
 /* 検索窓 */
-.ui.input {
-  color: #424846;
-  border: 1.5px solid #a0a0a0;
-  border-radius: 2px;
-  margin: 2%;
-  padding: 10px;
+.searchInput {
+  margin-top: 15px;
+  padding: 0 20px;
+  font-size: 25px;
+  height: 70px;
   width: 100%;
-  max-width: 300px;
-}
-.remove.icon {
-  padding: 20px;
 }

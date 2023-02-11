@@ -1,7 +1,22 @@
 import { useEffect, useState } from 'react';
 import firebase from './firebase';
-import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, Input, List} from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox} from 'semantic-ui-react'
 import './App.css';
+const ver = "2.4.0"
+const notion = "n6"
+const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
+
+
+①　レイアウトが変わりました！
+　　・ルビ検索窓が大きくなり、入力しやすくなっています
+　　・縦の動線が短くなり、作業しやすくなっています
+
+②　履歴への保存の可否を選べるようになりました！
+　　・デフォルトでは保存されるようになっています
+　　・保存しない場合は、チェックをオフにしてください
+
+③　その他、軽微な変更を行っています。`
+
 
 const db = firebase.firestore();
 
@@ -25,6 +40,7 @@ const App = () => {
   const [watchLogs, setWatchLogs] = useState([]);
   const [edit, setEdit] = useState(false);
   const [search, setSearch] = useState('');
+  const [checked, setChecked]  = useState(true);
   // 正規表現関連のステート
   const [word1, setWord1] = useState('');
   const [word2, setWord2] = useState('');
@@ -38,9 +54,9 @@ const App = () => {
   // 更新のお知らせの管理
   useEffect(() => {
     window.addEventListener('mouseover', () => {
-      if (localStorage.getItem('disp_popup') !== 'n5') {
+      if (localStorage.getItem('disp_popup') !== notion) {
         setOpen(true)
-        localStorage.setItem('disp_popup', 'n5')
+        localStorage.setItem('disp_popup', notion)
       };
     });
   },[])
@@ -51,7 +67,7 @@ const App = () => {
         .collection('logs')
         .where("yomigana", ">=", search)
         .where("yomigana", "<", search + '\uf8ff')
-        .limit(50)
+        .limit(15)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({
@@ -96,16 +112,8 @@ const App = () => {
   }, [search]);
 
   // 更新メッセージ
-  const updateMessage = 
-  `いつもご利用ありがとうございます！　アップデートがあります！
-
-
-  ①　ルビの履歴検索機能がより便利になりました！
-  　　・頭文字だけでなく、全文字検索できるようになりました
-  　　・熟字訓も検索できるようになりました
-
-  ②　その他、軽微な変更を行っています。`
-
+  const updateMessage = uMessage
+  
   // 履歴アイテム
   const logItems = logs.map(log => {
     if (edit) {
@@ -183,9 +191,9 @@ const App = () => {
   }
 
   // 入力された漢字・熟字訓を保存する関数
-  const HistoryLog = async () => {
-    if (kanji && count < 8) {
-      await db.collection('logs').add({
+  const HistoryLog = () => {
+    if (kanji && count < 8 && checked) {
+      db.collection('logs').add({
         kanji: kanji,
         ruby1: ruby1,
         ruby2: ruby2,
@@ -199,8 +207,8 @@ const App = () => {
         yomigana: ruby1+ruby2+ruby3+ruby4+ruby5+ruby6+ruby7+ruby8,
         createdAt: new Date(),
       })
-    } else if (jukuji) {
-      await db.collection('logs').add({
+    } else if (jukuji && checked) {
+      db.collection('logs').add({
         jukuji: jukuji,
         ruby_j: ruby_j,
         count: 1,
@@ -221,37 +229,46 @@ const App = () => {
 
   // リセットボタンの関数
   const resetBtn = () => {
-    const existence = (watchLogs.some(log => log.kanji === kanji && log.ruby1 === ruby1)) || (watchLogs.some(log => log.jukuji === jukuji))
-    if (!existence) {
-      HistoryLog()
-    } else {
-      if (kanji) {
-        db.collection('logs')
-        .where("kanji", "==", kanji)
-        .where("ruby1", "==", ruby1)
-        .get()
-        .then(querySnapshot => {
-          if (querySnapshot.empty) {
-              console.log('結果は空です')
-          } else {
-            querySnapshot.forEach(doc => {
-              addCount(doc.id)
-            })
-          }
-        })
-      } else if (jukuji) {
-        db.collection('logs')
-        .where("jukuji", "==", jukuji)
-        .get()
-        .then(querySnapshot => {
-          if (querySnapshot.empty) {
-              console.log('結果は空です')
-          } else {
-            querySnapshot.forEach(doc => {
-              addCount(doc.id)
-            })
-          }
-        })
+    if (kanji) {
+      const existence = (watchLogs.some(log => (log.kanji === kanji && log.ruby1 === ruby1))) 
+      if (!existence) {
+        HistoryLog()
+      } else {
+        if (kanji && checked) {
+          db.collection('logs')
+          .where("kanji", "==", kanji)
+          .where("ruby1", "==", ruby1)
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) {
+                console.log('結果は空です')
+            } else {
+              querySnapshot.forEach(doc => {
+                addCount(doc.id)
+              })
+            }
+          })
+        }
+      }
+    } else if (jukuji) {
+      const existence = (watchLogs.some(log => log.jukuji === jukuji))
+      if (!existence) {
+        HistoryLog()
+      } else {
+        if (jukuji && checked) {
+          db.collection('logs')
+          .where("jukuji", "==", jukuji)
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) {
+                console.log('結果は空です')
+            } else {
+              querySnapshot.forEach(doc => {
+                addCount(doc.id)
+              })
+            }
+          })
+        }
       }
     }
     setKanji('')
@@ -295,16 +312,20 @@ const App = () => {
     let message = "コピーしたよ！"
     if (n > 0.95) {
       message = "コピーしたよ、いつもおつかれさま"
-    } else if (n > 0.85) {
-      message = "コピーしたってばよ！"
-    } else if (n > 0.75) {
-      message = "コピーしたにゃ"
+    } else if (n > 0.9) {
+      message = "コピーしたよん♪"
+    } else if (n > 0.8) {
+      message = "コピーしたべ"
+    } else if (n > 0.7) {
+      message = "コピーさせていただきやした"
+    } else if (n > 0.6) {
+      message = "コピーしたけぇのお"
     } else if (n > 0.5) {
-      message = "コピーしたなり"
+      message = "コピーしたっちゃ！"
     }
     return (
       <Popup
-        trigger={<Button onClick={()=> copyToClipboard()}><Icon name='copy outline'/>COPY</Button>}
+        trigger={<Button className="copyBtn" onClick={()=> copyToClipboard()}><Icon name='copy outline'/>COPY</Button>}
         content={message}
         on='click'
         style={{"opacity":0.8}}
@@ -364,10 +385,10 @@ const App = () => {
     if (jukuji) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{jukuji}</rb><rp>（</rp><rt>{ruby_j}</rt><rp>）</rp></ruby>
-          <br />
-          <h3>タグ</h3>
+          <br/>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{jukuji}{"</rb><rp>（</rp><rt>"}{ruby_j}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -377,10 +398,9 @@ const App = () => {
     } else if (count === 1) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp></ruby>
-          <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -390,10 +410,10 @@ const App = () => {
     } else if (count === 2) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -403,10 +423,10 @@ const App = () => {
     } else if (count === 3) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -416,10 +436,10 @@ const App = () => {
     } else if (count === 4) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -429,10 +449,10 @@ const App = () => {
     } else if (count === 5) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -442,10 +462,10 @@ const App = () => {
     } else if (count === 6) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -455,10 +475,10 @@ const App = () => {
     } else if (count === 7) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp><rb>{kanjiSplit[6]}</rb><rp>（</rp><rt>{ruby7}</rt><rp>）</rp></ruby>
           <br />
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp><rb>"}{kanjiSplit[6]}{"</rb><rp>（</rp><rt>"}{ruby7}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -468,9 +488,9 @@ const App = () => {
     } else if (count === 8) {
       return (
         <div>
-          <h3>イメージ</h3>
+          <h4>《イメージ》</h4>
           <ruby><rb>{kanjiSplit[0]}</rb><rp>（</rp><rt>{ruby1}</rt><rp>）</rp><rb>{kanjiSplit[1]}</rb><rp>（</rp><rt>{ruby2}</rt><rp>）</rp><rb>{kanjiSplit[2]}</rb><rp>（</rp><rt>{ruby3}</rt><rp>）</rp><rb>{kanjiSplit[3]}</rb><rp>（</rp><rt>{ruby4}</rt><rp>）</rp><rb>{kanjiSplit[4]}</rb><rp>（</rp><rt>{ruby5}</rt><rp>）</rp><rb>{kanjiSplit[5]}</rb><rp>（</rp><rt>{ruby6}</rt><rp>）</rp><rb>{kanjiSplit[6]}</rb><rp>（</rp><rt>{ruby7}</rt><rp>）</rp><rb>{kanjiSplit[7]}</rb><rp>（</rp><rt>{ruby8}</rt><rp>）</rp></ruby>
-          <h3>タグ</h3>
+          <h4>《タグ》</h4>
           <p className="rubyText">
             {"<ruby><rb>"}{kanjiSplit[0]}{"</rb><rp>（</rp><rt>"}{ruby1}{"</rt><rp>）</rp><rb>"}{kanjiSplit[1]}{"</rb><rp>（</rp><rt>"}{ruby2}{"</rt><rp>）</rp><rb>"}{kanjiSplit[2]}{"</rb><rp>（</rp><rt>"}{ruby3}{"</rt><rp>）</rp><rb>"}{kanjiSplit[3]}{"</rb><rp>（</rp><rt>"}{ruby4}{"</rt><rp>）</rp><rb>"}{kanjiSplit[4]}{"</rb><rp>（</rp><rt>"}{ruby5}{"</rt><rp>）</rp><rb>"}{kanjiSplit[5]}{"</rb><rp>（</rp><rt>"}{ruby6}{"</rt><rp>）</rp><rb>"}{kanjiSplit[6]}{"</rb><rp>（</rp><rt>"}{ruby7}{"</rt><rp>）</rp><rb>"}{kanjiSplit[7]}{"</rb><rp>（</rp><rt>"}{ruby8}{"</rt><rp>）</rp></ruby>"}
           </p>
@@ -479,7 +499,10 @@ const App = () => {
       )
     } else {
       return (
-        <div></div>
+        <div>
+          <h4>《イメージ》</h4>
+          <h4 style={{"position":"absolute","top":"105px"}}>《タグ》</h4>
+        </div>
       )
     }
   }
@@ -592,7 +615,7 @@ const App = () => {
             active={activeItem === 'regexMode'}
             onClick={()=> setActiveItem('regexMode')}
           />
-          <Menu.Item position='right'>ver 2.3.0</Menu.Item>
+          <Menu.Item position='right'>{ver}</Menu.Item>
         </Menu>
       </div>
     )
@@ -606,14 +629,14 @@ const App = () => {
         <Head/>
 
         <div className="contents">
-          <Segment>
+          <Segment className="rubyContent">
             <Header as='h2' color='grey'>
-              <Icon name='rocket'/>
-              <Header.Content>入力欄</Header.Content>
+              <Icon name='code'/>
+              <Header.Content>ルビを作成</Header.Content>
             </Header>
-            <Grid columns={2} stackable divided textAlign='center'>
+            <Grid columns={2} stackable divided>
               <Grid.Column>
-                <div className="form">
+                <div>
                   <input
                     className="kanji"
                     value={kanji}
@@ -670,9 +693,7 @@ const App = () => {
                     onChange={(e) => {setRuby8(e.target.value)}}
                   ></input>
                 </div>
-              </Grid.Column>
-              <Grid.Column>
-                <div className="form">
+                <div>
                   <input
                     className="jukuji"
                     value={jukuji}
@@ -685,65 +706,64 @@ const App = () => {
                     placeholder="ルビ"
                     onChange={(e) => {setRuby_j(e.target.value)}}
                   ></input>
-                </div>              
-              </Grid.Column>
-            </Grid>
-            <div><Popup
-                trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
-                content='入力欄がリセットされ、履歴に追加されます。'
-                on='hover'
-                style={{"opacity":0.8}}
-                inverted
-                position="bottom right"
-                hideOnScroll
-                wide
-              /></div>
-          </Segment>
-          
-          <Segment>
-            <Header as='h2'color='grey'>
-              <Icon name='code'/>
-              <Header.Content>ルビタグ表示欄</Header.Content>
-            </Header>
-            <Grid>
-              <Grid.Column>
-                <div className="rubyContent">
-                  <Rubyfuri />
+                </div>
+                <div>
+                  <Popup
+                    trigger={<button className="resetBtn" onClick={resetBtn}>RESET</button>}
+                    content='履歴に追加したくない場合、チェックを外してください。'
+                    on='hover'
+                    style={{"opacity":0.8}}
+                    inverted
+                    position="bottom left"
+                    hideOnScroll
+                    wide
+                  />
+                  <Checkbox
+                    label='履歴に保存する'
+                    onChange={(e, data) => setChecked(data.checked)}
+                    checked={checked}
+                  />
                 </div>
               </Grid.Column>
+              <Grid.Column>
+                <h3>ルビタグ表示欄</h3>
+                <Rubyfuri />         
+              </Grid.Column>
             </Grid>
           </Segment>
           
-          <Segment>
+          <Segment className="historyContent">
             <Header as='h2'color='grey'>
               <DeleteBtn/>
               <Icon name='history'/>
-              <Header.Content>最近の履歴</Header.Content>
+              <Header.Content>履歴を検索</Header.Content>
             </Header>
-            <Popup
-              trigger={
-                <Input transparent icon>
-                  <input
-                    placeholder='検索できちゃうよ'
-                    value={search}
-                    onChange={(e) => {setSearch(e.target.value)}}
-                  />
-                  <Icon link name='remove' onClick={() => setSearch("")} />
-                </Input>
-              }
-              content='検索したい言葉のルビを入力してください'
-              on='focus'
-              style={{"opacity":0.8}}
-              inverted
-              position="right center"
-              hideOnScroll
-              wide
-            />
-            <Grid>
-              <Grid.Column className="historyContent">
-              <List celled horizontal size="huge">
-                {logItems}
-              </List>
+            <Grid columns={2} stackable divided>
+              <Grid.Column>
+                <Popup
+                  trigger={
+                    <input
+                      className="searchInput"
+                      placeholder='探したいルビを入力'
+                      value={search}
+                      onChange={(e) => {setSearch(e.target.value)}}
+                    />
+                  }
+                  content='ひらがなで入力してください'
+                  on='focus'
+                  style={{"opacity":0.8}}
+                  inverted
+                  position="bottom right"
+                  hideOnScroll
+                  wide
+                />
+                <button className="resetBtn" onClick={resetBtn}>RESET</button>
+              </Grid.Column>
+              <Grid.Column>
+                <h3>最近の履歴</h3>
+                <List celled horizontal size="huge">
+                  {logItems}
+                </List>
               </Grid.Column>
             </Grid>
           </Segment>
@@ -840,7 +860,7 @@ const App = () => {
               /></div>
           </Segment>
 
-          <Segment>
+          <Segment style={{"min-height":"200px"}}>
             <Header as='h2'color='grey'>
               <Icon name='code'/>
               <Header.Content>正規表現表示欄</Header.Content>
@@ -848,7 +868,7 @@ const App = () => {
             <br/>
             <Grid>
               <Grid.Column>
-                <div className="rubyContent">
+                <div>
                   <Regexfuri/>
                 </div>
               </Grid.Column>

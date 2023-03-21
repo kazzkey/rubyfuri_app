@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import firebase from './firebase';
+import { chat } from './Chat';  // chat.js のインポート
 import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.4.3"
-const notion = "n6"
+const ver = "2.5.0"
+const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 
 
-①　レイアウトが変わりました！
-　　・ルビ検索窓が大きくなり、入力しやすくなっています
-　　・縦の動線が短くなり、作業しやすくなっています
-
-②　履歴への保存の可否を選べるようになりました！
-　　・デフォルトでは保存されるようになっています
-　　・保存しない場合は、チェックをオフにしてください
-
-③　その他、軽微な変更を行っています。`
+①　一括ルビ変換の機能ができました！
+　　・「一括ルビ変換（β版）」のタブを選択してみてください。
+　　・chatGPTがその手助けをしてくれています。
+　　・とはいえ…まだ精度が悪いときもあるので、そこはご注意を。`
 
 
 const db = firebase.firestore();
@@ -302,6 +299,9 @@ const App = () => {
     if (activeItem === 'rubyfuriMode') {
       const copyData = document.getElementsByClassName("rubyText")[0].innerText
       await navigator.clipboard.writeText(copyData)
+    } else if (activeItem === 'rubyfuriMode2') {
+      const copyData = document.getElementsByClassName("rubyText2")[0].innerText
+      await navigator.clipboard.writeText(copyData)
     } else if (activeItem === 'regexMode') {
       const copyData = document.getElementsByClassName("regText")[0].innerText
       await navigator.clipboard.writeText(copyData)
@@ -501,6 +501,37 @@ const App = () => {
     }
   }
 
+    // ルビ振り一括用
+    // メッセージの状態管理用
+    const [ message, setMessage ] = useState('');
+    // 回答の状態管理用
+    const [ answer, setAnswer ] = useState('');
+    // ローディング表示用のステート
+    const [ loading, setLoading ] = useState( false );
+  
+    // メッセージの格納
+    const handleMessageChange = ( event )  => {
+      setMessage( event.target.value );
+    }
+   
+    // 「送信」ボタンを押したときの処理
+    const handleSubmit = useCallback(async ( event ) => {
+      event.preventDefault();
+      // フォームが空のとき
+      if ( !message ) {
+        return;
+      }
+      // APIリクエスト中はスルー
+      if ( loading ) return;
+      // APIリクエストを開始する前にローディング表示を開始
+      setLoading( true );
+      // chat.js にメッセージを渡して API から回答を取得
+      const responseText = await chat( message );
+      // 回答の格納
+      setAnswer( responseText );
+      setLoading( false );  // ローディング終了
+    })
+
   // 正規表現の表示コンポーネント
   const Regexfuri = () => {
     let reg1 = ""
@@ -603,6 +634,11 @@ const App = () => {
             name='ルビ'
             active={activeItem === 'rubyfuriMode'}
             onClick={()=> setActiveItem('rubyfuriMode')}
+          />
+          <Menu.Item
+            name='一括ルビ変換（β版）'
+            active={activeItem === 'rubyfuriMode2'}
+            onClick={()=> setActiveItem('rubyfuriMode2')}
           />
           <Menu.Item
             name='正規表現'
@@ -764,6 +800,83 @@ const App = () => {
         </div>
       </div>
       
+    )
+  } else if (activeItem === 'rubyfuriMode2') {
+    return (
+      <div className="App">
+      <MessageModal/>
+      <Head/>
+
+      <div className="contents">
+        {loading && (
+        <Segment loading style={{"min-height":"250px"}}>
+          <Header as='h2' color='grey'>
+            <Icon name='paste'/>
+            <Header.Content>入力欄</Header.Content>
+          </Header>
+        </Segment>)}
+        {!loading && (
+        <Segment style={{"min-height":"250px"}}>
+          <Header as='h2' color='grey'>
+            <Icon name='paste'/>
+            <Header.Content>入力欄</Header.Content>
+          </Header>
+          <Grid divided style={{"margin-top":"20px"}}>
+            <Grid.Column width={9}>
+            <div>
+              <form onSubmit={ handleSubmit } className="rubyContents2">
+                <label>
+                <textarea
+                  rows='5'
+                  cols='50'
+                  autoFocus="true"
+                  value={ message }
+                  onChange={ handleMessageChange }
+                />
+                </label>
+                <div>
+                  <button type="submit" className="copyBtn">送信</button>
+                </div>
+              </form>
+            </div>
+            </Grid.Column>
+            <Grid.Column width={7}>
+            <h3>入力の仕方</h3>
+            <p>- 漢字《ルビ》のような形式で入力してください。</p>
+            <p>（例）漢字《かんじ》を書《か》く。</p>
+            </Grid.Column>
+          </Grid>
+        </Segment>)}
+        
+        <Segment  style={{"min-height":"300px"}}>
+          <Header as='h2'color='grey'>
+            <Icon name='code'/>
+            <Header.Content>出力欄</Header.Content>
+          </Header>
+          <Grid style={{"margin-top":"30px"}}>
+          { loading && (
+            <div className='loading'>お待ちください...</div>
+          ) }
+          { !loading && answer && (
+            <div>
+              <p className="rubyText2">
+              { answer.split( /\n/ )
+              .map( ( item, index ) => {
+                return (
+                  <React.Fragment key={ index }>
+                  { item }
+                  <br />
+                  </React.Fragment>
+                );
+              })}
+              </p>
+              <CopyBtn/>
+            </div>
+          )}
+          </Grid>
+        </Segment>
+      </div>
+    </div>
     )
   } else if (activeItem === 'regexMode') {
     return (

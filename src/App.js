@@ -4,7 +4,7 @@ import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
 import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message, Form} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.6.0"
+const ver = "2.7.0"
 const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 
@@ -305,7 +305,7 @@ const App = () => {
       const copyData = document.getElementsByClassName("rubyText")[0].innerText
       await navigator.clipboard.writeText(copyData)
     } else if (activeItem === 'rubyfuriMode2') {
-      const copyData = document.getElementsByClassName("rubyText2")[0].innerText
+      const copyData = answer
       await navigator.clipboard.writeText(copyData)
     } else if (activeItem === 'regexMode') {
       const copyData = document.getElementsByClassName("regText")[0].innerText
@@ -518,12 +518,20 @@ const App = () => {
     const handleMessageChange = ( event )  => {
       setMessage( event.target.value );
     }
+    // 返答の変更
+    const handleAnswerChange = ( event )  => {
+      setAnswer( event.target.value );
+    }
    
-    // 「送信」ボタンを押したときの処理
+    // 「変換する」ボタンを押したときの処理
     const handleSubmit = useCallback(async ( event ) => {
       event.preventDefault();
       // フォームが空のとき
       if ( !message ) {
+        return;
+      }
+      if (!message.includes('《') || !message.includes('》')) {
+        alert("正しく入力してちょ")
         return;
       }
       // APIリクエスト中はスルー
@@ -839,22 +847,14 @@ const App = () => {
                 <textarea
                   rows='5'
                   autoFocus="true"
+                  maxlength="600"
                   value={ message }
                   onChange={ handleMessageChange }
                 />
                 </label>
                 <div>
                   <button type="submit" className="resetBtn">変換する</button>
-                  <Popup
-                    trigger={<button className="resetBtn" onClick={reset2Btn}>RESET</button>}
-                    content='入力欄がリセットされます。'
-                    on='hover'
-                    style={{"opacity":0.8}}
-                    inverted
-                    position="bottom right"
-                    hideOnScroll
-                    wide
-                  />
+                  <button className="resetBtn" onClick={reset2Btn}>RESET</button>
                 </div>
               </form>
             </div>
@@ -877,7 +877,23 @@ const App = () => {
             <h4>《タグ》</h4>
               { !loading && answer && (
                 <div>
-                  <p className="rubyText2">
+                  <Popup
+                  trigger={
+                    <textarea
+                    rows='7'
+                    maxlength="1200"
+                    value={ answer }
+                    onChange={ handleAnswerChange }
+                  />
+                  }
+                  content='手直ししたい場合はここで編集できます'
+                  on='hover'
+                  style={{"opacity":0.8}}
+                  inverted
+                  position="top right"
+                  wide
+                />
+                  {/* <p className="rubyText2">
                   { answer.split( /\n/ )
                   .map( ( item, index ) => {
                   return (
@@ -887,7 +903,7 @@ const App = () => {
                     </React.Fragment>
                   );
                   })}
-                  </p>
+                  </p> */}
                   <CopyBtn/>
                 </div>
               )}
@@ -895,7 +911,16 @@ const App = () => {
             <Grid.Column>
               <h4>《イメージ》</h4>
               { !loading && answer && (
-                <div dangerouslySetInnerHTML={{ __html: answer }}></div>
+                <div>
+                  { answer.split( /\n/ )
+                  .map( ( item, index ) => {
+                  return (
+                    <React.Fragment key={ index }>
+                      <p dangerouslySetInnerHTML={{ __html: item }}></p>
+                    </React.Fragment>
+                  );
+                  })}
+                </div>
               )}
             </Grid.Column>
           </Grid>

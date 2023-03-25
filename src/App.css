@@ -44,7 +44,7 @@ input:focus, textarea:focus {
 
 
 .resetBtn {
-  margin: 20px 20px 0 10px;
+  margin: 20px 15px 0 10px;
   cursor: pointer;
   background-color: white;
   color: #00cc88;
@@ -68,7 +68,7 @@ input:focus, textarea:focus {
 
 /* 漢字、熟字、検索の入力欄 */
 .kanji, .jukuji, .searchInput {
-  margin-top: 15px;
+  margin-top: 5px;
   padding: 0 10px;
   font-size: 25px;
   height: 70px;
@@ -101,7 +101,7 @@ input:focus, textarea:focus {
 }
 
 .rubyContent {
-  min-height: 450px;
+  min-height: 400px;
 }
 
 .historyContent {

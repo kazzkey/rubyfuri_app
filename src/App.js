@@ -2,9 +2,9 @@ import React from 'react';
 import { useEffect, useState, useCallback } from 'react';
 import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
-import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox} from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message, Form} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.5.1"
+const ver = "2.6.0"
 const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 
@@ -292,6 +292,11 @@ const App = () => {
     setHiragana2('')
     setHiragana3('')
     setHiragana4('')
+  }
+
+  const reset2Btn = () => {
+    setMessage('')
+    setAnswer('')
   }
 
   // コピーボタンとその関数
@@ -808,6 +813,11 @@ const App = () => {
       <Head/>
 
       <div className="contents">
+        <Message
+          icon='lightbulb outline'
+          header='Information'
+          content="長い文章などではうまく変換できないことがあります。その場合は単語単位で試してみてください。"
+        />
         {loading && (
         <Segment loading style={{"min-height":"250px"}}>
           <Header as='h2' color='grey'>
@@ -821,58 +831,73 @@ const App = () => {
             <Icon name='paste'/>
             <Header.Content>入力欄</Header.Content>
           </Header>
-          <Grid divided style={{"margin-top":"20px"}}>
+          <Grid>
             <Grid.Column width={9}>
             <div>
               <form onSubmit={ handleSubmit } className="rubyContents2">
                 <label>
                 <textarea
                   rows='5'
-                  cols='50'
                   autoFocus="true"
                   value={ message }
                   onChange={ handleMessageChange }
                 />
                 </label>
                 <div>
-                  <button type="submit" className="copyBtn">送信</button>
+                  <button type="submit" className="resetBtn">変換する</button>
+                  <Popup
+                    trigger={<button className="resetBtn" onClick={reset2Btn}>RESET</button>}
+                    content='入力欄がリセットされます。'
+                    on='hover'
+                    style={{"opacity":0.8}}
+                    inverted
+                    position="bottom right"
+                    hideOnScroll
+                    wide
+                  />
                 </div>
               </form>
             </div>
             </Grid.Column>
             <Grid.Column width={7}>
             <h3>入力の仕方</h3>
-            <p>- 漢字《ルビ》のような形式で入力してください。</p>
+            <p>漢字《ルビ》の形式で入力してください。</p>
             <p>（例）漢字《かんじ》を書《か》く。</p>
             </Grid.Column>
           </Grid>
         </Segment>)}
         
-        <Segment  style={{"min-height":"300px"}}>
+        <Segment style={{"min-height":"300px"}}>
           <Header as='h2'color='grey'>
             <Icon name='code'/>
             <Header.Content>出力欄</Header.Content>
           </Header>
-          <Grid style={{"margin-top":"30px"}}>
-          { loading && (
-            <div className='loading'>お待ちください...</div>
-          ) }
-          { !loading && answer && (
-            <div>
-              <p className="rubyText2">
-              { answer.split( /\n/ )
-              .map( ( item, index ) => {
-                return (
-                  <React.Fragment key={ index }>
-                  { item }
-                  <br />
-                  </React.Fragment>
-                );
-              })}
-              </p>
-              <CopyBtn/>
-            </div>
-          )}
+          <Grid columns={2} divided style={{"min-height":"200px"}}>
+            <Grid.Column>
+            <h4>《タグ》</h4>
+              { !loading && answer && (
+                <div>
+                  <p className="rubyText2">
+                  { answer.split( /\n/ )
+                  .map( ( item, index ) => {
+                  return (
+                    <React.Fragment key={ index }>
+                      { item }
+                      <br />
+                    </React.Fragment>
+                  );
+                  })}
+                  </p>
+                  <CopyBtn/>
+                </div>
+              )}
+            </Grid.Column>
+            <Grid.Column>
+              <h4>《イメージ》</h4>
+              { !loading && answer && (
+                <div dangerouslySetInnerHTML={{ __html: answer }}></div>
+              )}
+            </Grid.Column>
           </Grid>
         </Segment>
       </div>

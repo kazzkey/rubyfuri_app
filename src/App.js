@@ -2,9 +2,9 @@ import React from 'react';
 import { useEffect, useState, useCallback } from 'react';
 import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
-import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message, Form} from 'semantic-ui-react'
+import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.7.0"
+const ver = "2.7.1"
 const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 
@@ -847,7 +847,7 @@ const App = () => {
                 <textarea
                   rows='5'
                   autoFocus="true"
-                  maxlength="600"
+                  maxlength="300"
                   value={ message }
                   onChange={ handleMessageChange }
                 />

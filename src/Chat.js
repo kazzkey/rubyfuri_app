@@ -82,6 +82,22 @@ export const chat = async ( message ) => {
         },
         {
           'role': 'user',
+          'content': '友人《ゆうじん》と一緒《いっしょ》に、図書館《としょかん》へ行《い》った。',
+        },
+        {
+          'role': 'assistant',
+          'content': '<ruby><rb>友</rb><rp>（</rp><rt>ゆう</rt><rp>）</rp><rb>人</rb><rp>（</rp><rt>じん</rt><rp>）</rp></ruby>と<ruby><rb>一</rb><rp>（</rp><rt>いっ</rt><rp>）</rp><rb>緒</rb><rp>（</rp><rt>しょ</rt><rp>）</rp></ruby>に<ruby><rb>図</rb><rp>（</rp><rt>と</rt><rp>）</rp><rb>書</rb><rp>（</rp><rt>しょ</rt><rp>）</rp><rb>館</rb><rp>（</rp><rt>かん</rt><rp>）</rp></ruby>へ<ruby><rb>行</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。',
+        },
+        {
+          'role': 'user',
+          'content': '「私《わたし》は私、何者でもないわ。」とナンシー教授は言《い》った。',
+        },
+        {
+          'role': 'assistant',
+          'content': '「<ruby><rb>私</rb><rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は私、何者でもないわ。」とナンシー教授は<ruby><rb>言</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。',
+        },
+        {
+          'role': 'user',
           'content': message,
         }
       ],

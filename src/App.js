@@ -4,7 +4,7 @@ import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
 import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.5.0"
+const ver = "2.5.1"
 const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 

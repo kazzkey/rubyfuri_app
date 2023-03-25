@@ -12,25 +12,77 @@ export const chat = async ( message ) => {
       messages: [
         {
           'role': 'system',
-          'content': '《》が1つも使われていない文章が入力された場合はその文章を回答せず、「エラー：ルビを作成したい場合は、「漢字《ルビ》」の形で入力してください。」と出力してください。'
+          'content': "You are a specialist who converts a piece of text written in Japanese into html ruby tags."
+        },
+        {
+          'role': 'system',
+          'content': 
+          `# You know the following
+          - The text is written in Japanese.
+          - Let Y be "Hiragana" or "Katakana".
+          - Let X be "Japanese Kanji characters" that are read as Y.
+          - If you find X《Y》 in the text, you can convert them into a ruby tag. You do not convert any part except X《Y》.
+          - If X is two or more Japanese Kanji characters, You can convert this X《Y》 to a mono ruby tag.
+
+          # Here are examples.
+
+          [Example1]
+          Before conversion:
+          読《よ》む
+          After conversion
+          <ruby><rb>読</rb><rp>（</rp><rt>よ</rt><rp>）</rp></ruby>む
+
+          [Example2]
+          Before conversion:
+          日本《にほん》
+          After conversion
+          <ruby><rb>日</rb><rp>（</rp><rt>に</rt><rp>）</rp><rb>本</rb><rp>（</rp><rt>ほん</rt><rp>）</rp></ruby>
+
+          [Example3]
+          Before conversion:
+          執筆《しっぴつ》
+          After conversion:
+          <ruby><rb>執</rb><rp>（</rp><rt>しっ</rt><rp>）</rp><rb>筆</rb><rp>（</rp><rt>ぴつ</rt><rp>）</rp></ruby>
+
+          [Example4]
+          Before conversion:
+          一冊《いっさつ》
+          After conversion:
+          <ruby><rb>一</rb><rp>（</rp><rt>いっ</rt><rp>）</rp><rb>冊</rb><rp>（</rp><rt>さつ</rt><rp>）</rp></ruby>
+
+          [Example5]
+          Before conversion:
+          学校《がっこう》
+          After conversion:
+          <ruby><rb>学</rb><rp>（</rp><rt>がっ</rt><rp>）</rp><rb>校</rb><rp>（</rp><rt>こう</rt><rp>）</rp></ruby>
+
+          [Example6]
+          Before conversion:
+          平安京《へいあんきょう》
+          After conversion:
+          <ruby><rb>平</rb><rp>（</rp><rt>へい</rt><rp>）</rp><rb>安</rb><rp>（</rp><rt>あん</rt><rp>）</rp><rb>京</rb><rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>
+
+          [Example7]
+          Before conversion:
+          織田信長《おだのぶなが》
+          After conversion:
+          <ruby><rb>織</rb><rp>（</rp><rt>お</rt><rp>）</rp><rb>田</rb><rp>（</rp><rt>だ</rt><rp>）</rp><rb>信</rb><rp>（</rp><rt>のぶ</rt><rp>）</rp><rb>長</rb><rp>（</rp><rt>なが</rt><rp>）</rp></ruby>
+
+          [Example8]
+          Before conversion:
+          中華人民共和国《ちゅうかじんみんきょうわこく》
+          After conversion:
+          <ruby><rb>中</rb><rp>（</rp><rt>ちゅう</rt><rp>）</rp><rb>華</rb><rp>（</rp><rt>か</rt><rp>）</rp><rb>人</rb><rp>（</rp><rt>じん</rt><rp>）</rp><rb>民</rb><rp>（</rp><rt>みん</rt><rp>）</rp><rb>共</rb><rp>（</rp><rt>きょう</rt><rp>）</rp><rb>和</rb><rp>（</rp><rt>わ</rt><rp>）</rp><rb>国</rb><rp>（</rp><rt>こく</rt><rp>）</rp></ruby>
+
+          [Example9]
+          Before conversion:
+          書《か》き直《なお》す
+          After conversion:
+          <ruby><rb>書</rb><rp>（</rp><rt>か</rt><rp>）</rp></ruby>き<ruby><rb>直</rb><rp>（</rp><rt>なお</rt><rp>）</rp></ruby>す`
         },
         {
           'role': 'user',
-          'content':
-          `【ルール】に記載された事項を遵守して、【変換対象】をhtmlのルビタグに変換してください。
-          【ルール】
-          1. 【変換対象】の中の、漢字《ひらがな》を変換します。
-          2. 《》の中は左隣の漢字のルビです。
-          3. 2字以上の漢字は、モノルビタグにしてください。4.と5.に例を示します。
-          4. 漢字《かんじ》→<ruby><rb>漢</rb><rp>（</rp><rt>かん</rt><rp>）</rp><rb>字</rb><rp>（</rp><rt>じ</rt><rp>）</rp></ruby>
-          5. 下線部《かせんぶ》→<ruby><rb>下</rb><rp>（</rp><rt>か</rt><rp>）</rp><rb>線</rb><rp>（</rp><rt>せん</rt><rp>）</rp><rb>部</rb><rp>（</rp><rt>ぶ</rt><rp>）</rp></ruby>
-          6. 漢字が熟字訓の場合は、グループルビタグにしてください。7.と8.に例を示します。
-          7. 今日《きょう》→<ruby><rb>今日</rb><rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>
-          8. 明日《あした》→<ruby><rb>明日</rb><rp>（</rp><rt>あした</rt><rp>）</rp></ruby>
-          9. 訓読みの漢字は、送り仮名をルビタグの外に出してください。10.に例を示します。
-          10. 書《か》く→<ruby><rb>書</rb><rp>（</rp><rt>か</rt><rp>）</rp></ruby>く 
-          【変換対象】
-          ${message}`,
+          'content': message,
         }
       ],
     }, {

@@ -4,7 +4,7 @@ import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
 import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.7.1"
+const ver = "2.7.2"
 const notion = "n7"
 const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
 
@@ -92,7 +92,7 @@ const App = () => {
       const unsubscribe = db
         .collection('logs')
         .orderBy('createdAt', 'desc')
-        .limit(20)
+        .limit(15)
         .onSnapshot((querysnapshot) => {
           const _logs = querysnapshot.docs.map(doc => {
             return ({
@@ -824,7 +824,7 @@ const App = () => {
         <Message
           icon='lightbulb outline'
           header='Information'
-          content="長い文章などではうまく変換できないことがあります。その場合は単語単位で試してみてください。"
+          content="少しずつ改善してきてます！"
         />
         {loading && (
         <Segment loading style={{"min-height":"250px"}}>

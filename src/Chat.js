@@ -12,17 +12,18 @@ export const chat = async ( message ) => {
       messages: [
         {
           'role': 'system',
-          'content': "You are a specialist who converts a piece of text written in Japanese into html ruby tags."
+          'content': "You are a specialist who converts a piece of input text into html ruby tags. The final output is a text after conversion."
         },
         {
           'role': 'system',
           'content': 
           `# You know the following
-          - The text is written in Japanese.
-          - Let Y be "Hiragana" or "Katakana".
-          - Let X be "Japanese Kanji characters" that are read as Y.
-          - If you find X《Y》 in the text, you can convert them into a ruby tag. You do not convert any part except X《Y》.
-          - If X is two or more Japanese Kanji characters, You can convert this X《Y》 to a mono ruby tag.
+          - Input text is written in Japanese.
+          - Y is "ひらがな" or "カタカナ".
+          - X is "漢字" that are read as Y.
+          - If you find "X《Y》" in text, you can convert them into a ruby tag.
+          - You do not edit any part except X《Y》.
+          - If X is "熟語"(=two or more "漢字"), You can convert this X《Y》 to a mono ruby tag.
 
           # Here are examples.
 
@@ -82,19 +83,19 @@ export const chat = async ( message ) => {
         },
         {
           'role': 'user',
-          'content': '友人《ゆうじん》と一緒《いっしょ》に、図書館《としょかん》へ行《い》った。',
+          'content': "友人《ゆうじん》と一緒《いっしょ》に、図書館《としょかん》へ行った。\n「私《わたし》は私、何者でもないわ。」とナンシー教授は言《い》った。",
         },
         {
           'role': 'assistant',
-          'content': '<ruby><rb>友</rb><rp>（</rp><rt>ゆう</rt><rp>）</rp><rb>人</rb><rp>（</rp><rt>じん</rt><rp>）</rp></ruby>と<ruby><rb>一</rb><rp>（</rp><rt>いっ</rt><rp>）</rp><rb>緒</rb><rp>（</rp><rt>しょ</rt><rp>）</rp></ruby>に<ruby><rb>図</rb><rp>（</rp><rt>と</rt><rp>）</rp><rb>書</rb><rp>（</rp><rt>しょ</rt><rp>）</rp><rb>館</rb><rp>（</rp><rt>かん</rt><rp>）</rp></ruby>へ<ruby><rb>行</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。',
+          'content': "<ruby><rb>友</rb><rp>（</rp><rt>ゆう</rt><rp>）</rp><rb>人</rb><rp>（</rp><rt>じん</rt><rp>）</rp></ruby>と<ruby><rb>一</rb><rp>（</rp><rt>いっ</rt><rp>）</rp><rb>緒</rb><rp>（</rp><rt>しょ</rt><rp>）</rp></ruby>に<ruby><rb>図</rb><rp>（</rp><rt>と</rt><rp>）</rp><rb>書</rb><rp>（</rp><rt>しょ</rt><rp>）</rp><rb>館</rb><rp>（</rp><rt>かん</rt><rp>）</rp></ruby>へ<ruby><rb>行</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。\n「<ruby><rb>私</rb><rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は私、何者でもないわ。」とナンシー教授は<ruby><rb>言</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。",
         },
         {
           'role': 'user',
-          'content': '「私《わたし》は私、何者でもないわ。」とナンシー教授は言《い》った。',
+          'content': '僕は公園へ行った。そこで彼《かれ》に話しかけた。',
         },
         {
           'role': 'assistant',
-          'content': '「<ruby><rb>私</rb><rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は私、何者でもないわ。」とナンシー教授は<ruby><rb>言</rb><rp>（</rp><rt>い</rt><rp>）</rp></ruby>った。',
+          'content': '僕は公園へ行った。そこで<ruby><rb>彼</rb><rp>（</rp><rt>かれ</rt><rp>）</rp></ruby>に話しかけた。',
         },
         {
           'role': 'user',

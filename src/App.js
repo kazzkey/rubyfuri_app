@@ -4,15 +4,17 @@ import firebase from './firebase';
 import { chat } from './Chat';  // chat.js のインポート
 import { Button, Popup, Header, Grid, Segment, Icon, Modal, Menu, List, Checkbox, Message} from 'semantic-ui-react'
 import './App.css';
-const ver = "2.7.2"
-const notion = "n7"
-const uMessage = `いつもご利用ありがとうございます！　アップデートがあります！
+const ver = "2.8.0"
+const notion = "n8"
+const uMessage =`
+いつもご利用ありがとうございます！
+アップデートがあります！
 
 
-①　一括ルビ変換の機能ができました！
-　　・「一括ルビ変換（β版）」のタブを選択してみてください。
-　　・chatGPTがその手助けをしてくれています。
-　　・とはいえ…まだ精度が悪いときもあるので、そこはご注意を。`
+①　一括ルビ変換の精度があがりました！
+　　・「一括ルビ変換（β版）」タブから利用できます。
+　　・中の人がGPT-4になりました。
+　　・精度がいくらかあがっております！お試しください！`
 
 
 const db = firebase.firestore();
@@ -824,7 +826,7 @@ const App = () => {
         <Message
           icon='lightbulb outline'
           header='Information'
-          content="少しずつ改善してきてます！"
+          content="中の人がGPT-4になりました。精度が上がっております！"
         />
         {loading && (
         <Segment loading style={{"min-height":"250px"}}>
@@ -847,7 +849,7 @@ const App = () => {
                 <textarea
                   rows='5'
                   autoFocus="true"
-                  maxlength="300"
+                  maxlength="500"
                   value={ message }
                   onChange={ handleMessageChange }
                 />
@@ -881,7 +883,7 @@ const App = () => {
                   trigger={
                     <textarea
                     rows='7'
-                    maxlength="1200"
+                    maxlength="5000"
                     value={ answer }
                     onChange={ handleAnswerChange }
                   />
